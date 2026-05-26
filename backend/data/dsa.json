@@ -1,0 +1,216 @@
+[
+  {
+    "_id": "m1yrlh8",
+    "solvedCount": 6,
+    "solvedProblems": [
+      {
+        "title": "Two Sum",
+        "difficulty": "Easy",
+        "platform": "Internal",
+        "solvedAt": "2026-05-24T13:21:41.589Z"
+      },
+      {
+        "title": "Next Permutation",
+        "difficulty": "Hard",
+        "platform": "Internal",
+        "solvedAt": "2026-05-24T17:00:16.930Z"
+      },
+      {
+        "title": "Container With Most Water",
+        "difficulty": "Medium",
+        "platform": "Internal",
+        "solvedAt": "2026-05-24T17:18:12.279Z"
+      },
+      {
+        "title": "merge intervals",
+        "difficulty": "Medium",
+        "platform": "LeetCode",
+        "solvedAt": "2026-05-24T17:18:32.328Z"
+      },
+      {
+        "title": "Maximum Subarray",
+        "difficulty": "Medium",
+        "platform": "Internal",
+        "solvedAt": "2026-05-25T13:48:25.481Z"
+      },
+      {
+        "title": "3Sum",
+        "difficulty": "Medium",
+        "platform": "Internal",
+        "solvedAt": "2026-05-25T13:48:28.307Z"
+      }
+    ],
+    "streak": 1,
+    "lastActive": "2026-05-25T13:48:28.307Z",
+    "userId": "ed51ivc",
+    "topic": "Arrays"
+  },
+  {
+    "_id": "n0swmwt",
+    "solvedCount": 2,
+    "solvedProblems": [
+      {
+        "title": "Longest Substring Without Repeating Characters",
+        "difficulty": "Medium",
+        "platform": "Internal",
+        "solvedAt": "2026-05-26T13:14:57.548Z"
+      },
+      {
+        "title": "Valid Anagram",
+        "difficulty": "Easy",
+        "platform": "Internal",
+        "solvedAt": "2026-05-26T13:14:58.466Z"
+      }
+    ],
+    "streak": 1,
+    "lastActive": "2026-05-26T13:14:58.466Z",
+    "userId": "ed51ivc",
+    "topic": "Strings"
+  },
+  {
+    "_id": "4jethk5",
+    "solvedCount": 1,
+    "solvedProblems": [
+      {
+        "title": "Merge Two Sorted Lists",
+        "difficulty": "Easy",
+        "platform": "Internal",
+        "solvedAt": "2026-05-25T13:48:32.874Z"
+      }
+    ],
+    "streak": 1,
+    "lastActive": "2026-05-25T13:48:32.874Z",
+    "userId": "ed51ivc",
+    "topic": "Linked List"
+  },
+  {
+    "_id": "jkmrsdo",
+    "solvedCount": 2,
+    "solvedProblems": [
+      {
+        "title": "Binary Tree Maximum Path Sum",
+        "difficulty": "Hard",
+        "platform": "Internal",
+        "solvedAt": "2026-05-26T13:14:47.670Z"
+      },
+      {
+        "title": "Maximum Depth of Binary Tree",
+        "difficulty": "Easy",
+        "platform": "Internal",
+        "solvedAt": "2026-05-26T13:14:54.094Z"
+      }
+    ],
+    "streak": 1,
+    "lastActive": "2026-05-26T13:14:54.094Z",
+    "userId": "ed51ivc",
+    "topic": "Trees"
+  },
+  {
+    "_id": "wrm94so",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-05-24T13:09:00.740Z",
+    "userId": "ed51ivc",
+    "topic": "Graphs"
+  },
+  {
+    "_id": "72y74p0",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-05-24T13:09:00.741Z",
+    "userId": "ed51ivc",
+    "topic": "Dynamic Programming"
+  },
+  {
+    "_id": "he6t8sm",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-05-24T13:09:00.745Z",
+    "userId": "ed51ivc",
+    "topic": "Recursion"
+  },
+  {
+    "_id": "8bp4rm1",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-05-24T13:09:00.747Z",
+    "userId": "ed51ivc",
+    "topic": "Backtracking"
+  },
+  {
+    "_id": "9dv930g",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-05-24T17:01:38.192Z",
+    "userId": "qu8hypr",
+    "topic": "Arrays"
+  },
+  {
+    "_id": "mpx81ym",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-05-24T17:01:38.195Z",
+    "userId": "qu8hypr",
+    "topic": "Strings"
+  },
+  {
+    "_id": "4ip6z41",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-05-24T17:01:38.196Z",
+    "userId": "qu8hypr",
+    "topic": "Linked List"
+  },
+  {
+    "_id": "7t2yeot",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-05-24T17:01:38.198Z",
+    "userId": "qu8hypr",
+    "topic": "Trees"
+  },
+  {
+    "_id": "nwq0394",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-05-24T17:01:38.200Z",
+    "userId": "qu8hypr",
+    "topic": "Graphs"
+  },
+  {
+    "_id": "lbjocou",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-05-24T17:01:38.202Z",
+    "userId": "qu8hypr",
+    "topic": "Dynamic Programming"
+  },
+  {
+    "_id": "vx8y29r",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-05-24T17:01:38.204Z",
+    "userId": "qu8hypr",
+    "topic": "Recursion"
+  },
+  {
+    "_id": "g0hph8c",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-05-24T17:01:38.208Z",
+    "userId": "qu8hypr",
+    "topic": "Backtracking"
+  }
+]

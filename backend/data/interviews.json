@@ -1,0 +1,272 @@
+[
+  {
+    "_id": "31bwu4j",
+    "status": "completed",
+    "createdAt": "2026-05-24T16:51:46.835Z",
+    "userId": "ed51ivc",
+    "type": "Technical",
+    "company": "General",
+    "questions": [
+      {
+        "questionText": "Describe the Virtual DOM in React and explain its role in optimizing UI updates. How does React achieve efficient re-rendering, and what strategies would you employ to further optimize a complex React component's performance?",
+        "answerText": "fff",
+        "score": 0,
+        "feedback": "The provided answer 'fff' is completely irrelevant and does not address any part of the question regarding the Virtual DOM, UI optimization, or re-rendering strategies in React.",
+        "analysis": {
+          "fillerWords": [],
+          "fillerCount": 0,
+          "fluencyScore": 100,
+          "speakingSpeed": "Too Short / Slow"
+        }
+      },
+      {
+        "questionText": "You are tasked with designing a RESTful API for a new feature using Node.js and Express. Describe the key architectural considerations you would make, including how you would handle asynchronous operations, error handling, and secure data transmission. Provide a high-level overview of the folder structure you might use.",
+        "answerText": "fdsc",
+        "score": 0,
+        "feedback": "The provided answer 'fdsc' is completely irrelevant and does not address any part of the question regarding RESTful API design, asynchronous operations, error handling, security, or folder structure.",
+        "analysis": {
+          "fillerWords": [],
+          "fillerCount": 0,
+          "fluencyScore": 100,
+          "speakingSpeed": "Too Short / Slow"
+        }
+      },
+      {
+        "questionText": "Imagine you are building a social media application where users can create posts, and other users can 'like' these posts. Using MongoDB, how would you design the database schema for posts and likes? Discuss the trade-offs of different approaches (e.g., embedding vs. referencing) and how your chosen design would impact query performance when retrieving posts with their associated like counts, and how you would integrate this with your Node.js backend.",
+        "answerText": "dvfdf",
+        "score": 0,
+        "feedback": "The provided answer 'dvfdf' is gibberish and does not address any part of the question. It fails to provide any database schema design, discuss trade-offs, or mention integration with Node.js.",
+        "analysis": {
+          "fillerWords": [],
+          "fillerCount": 0,
+          "fluencyScore": 100,
+          "speakingSpeed": "Too Short / Slow"
+        }
+      }
+    ],
+    "overallFeedback": {
+      "technicalScore": 0,
+      "communicationScore": 100,
+      "confidenceScore": 60,
+      "summary": "The candidate's technical performance was critically poor, providing irrelevant and nonsensical answers to all three complex technical questions, indicating a fundamental lack of knowledge in core web development technologies like React, Node.js, Express, and MongoDB. While exhibiting good eye contact and an outwardly confident demeanor, the absence of any meaningful technical communication or problem-solving depth is a significant concern. The high level of anxiousness despite apparent confidence suggests potential discomfort with the inability to answer the questions effectively.",
+      "weakAreas": [
+        "Core Web Development Technologies (React, Node.js, Express, MongoDB)",
+        "Technical Problem Solving and Articulation",
+        "Database Schema Design and Optimization"
+      ],
+      "behaviorFeedback": {
+        "pros": [
+          "Maintained good eye contact throughout the interview.",
+          "Presented with a relatively high confidence score."
+        ],
+        "cons": [
+          "Exhibited a notable level of anxious/fidget expressions.",
+          "Focused expression could be improved for deeper engagement."
+        ]
+      }
+    }
+  },
+  {
+    "_id": "qypqcik",
+    "status": "completed",
+    "createdAt": "2026-05-24T16:52:57.056Z",
+    "userId": "ed51ivc",
+    "type": "Coding",
+    "company": "General",
+    "questions": [
+      {
+        "questionText": "Describe how you would manage state in a complex React application. Compare and contrast using React Context API with a library like Redux or Zustand, outlining the pros and cons of each approach.",
+        "answerText": "sdc",
+        "score": 0,
+        "feedback": "The provided answer 'sdc' is nonsensical and does not address any part of the question regarding state management in React. Please provide a substantive response.",
+        "analysis": {
+          "fillerWords": [],
+          "fillerCount": 0,
+          "fluencyScore": 100,
+          "speakingSpeed": "Too Short / Slow"
+        }
+      },
+      {
+        "questionText": "You're building a RESTful API with Node.js and Express. Describe how you would implement authentication and authorization for user-specific data. Discuss the considerations for security and scalability.",
+        "answerText": "sdc xz",
+        "score": 0,
+        "feedback": "The answer 'sdc xz' does not contain any relevant information regarding authentication, authorization, security, or scalability in a Node.js/Express API. It fails to address any part of the question.",
+        "analysis": {
+          "fillerWords": [],
+          "fillerCount": 0,
+          "fluencyScore": 100,
+          "speakingSpeed": "Too Short / Slow"
+        }
+      },
+      {
+        "questionText": "Consider a scenario where you need to implement a real-time chat feature in your full-stack application. How would you integrate MongoDB for message storage, and what technologies (e.g., WebSockets) would you use on the Node.js backend and React frontend to achieve real-time functionality?",
+        "answerText": "scd cdcs",
+        "score": 0,
+        "feedback": "The provided answer 'scd cdcs' is incoherent and does not address any aspect of the technical question regarding MongoDB integration or real-time technologies for a chat feature.",
+        "analysis": {
+          "fillerWords": [],
+          "fillerCount": 0,
+          "fluencyScore": 100,
+          "speakingSpeed": "Too Short / Slow"
+        }
+      }
+    ],
+    "overallFeedback": {
+      "technicalScore": 0,
+      "communicationScore": 100,
+      "confidenceScore": 60,
+      "summary": "The candidate presented with commendable non-verbal communication, demonstrating excellent eye contact, high confidence, and a focused expression throughout the interview. However, their technical performance was severely lacking, providing incoherent and nonsensical answers to all three complex coding questions. This indicates a profound gap in fundamental technical knowledge across crucial web development domains such as React state management, API authentication, and real-time system design, despite a poised demeanor. Extensive and focused technical preparation is critical for any future coding interview attempts.",
+      "weakAreas": [
+        "React State Management (Context API, Redux/Zustand)",
+        "Node.js/Express API Authentication and Authorization",
+        "Real-time Full-stack Development (WebSockets, MongoDB integration)"
+      ],
+      "behaviorFeedback": {
+        "pros": [
+          "Maintained excellent eye contact and a focused expression, conveying engagement.",
+          "Exhibited high confidence throughout the session, suggesting good composure."
+        ],
+        "cons": [
+          "The candidate's high confidence did not translate into substantive technical responses, indicating a potential overestimation of their technical readiness.",
+          "Despite a focused expression, there was no attempt to articulate thought processes, ask clarifying questions, or verbalize confusion, opting instead for incoherent answers."
+        ]
+      }
+    }
+  },
+  {
+    "_id": "c89u7cr",
+    "status": "completed",
+    "createdAt": "2026-05-25T14:10:06.571Z",
+    "userId": "ed51ivc",
+    "type": "Technical",
+    "company": "Amazon",
+    "questions": [
+      {
+        "questionText": "Design a real-time notification service for a web application. Explain your architectural choices for the front-end (React), back-end (Node.js), and data storage (MongoDB), focusing on scalability, fault tolerance, and message delivery guarantees.",
+        "answerText": "No response provided.",
+        "score": 0,
+        "feedback": "No response was provided for the question. Please submit an answer to receive a score and feedback on your architectural design choices.",
+        "analysis": {
+          "fillerWords": [],
+          "fillerCount": 0,
+          "fluencyScore": 100,
+          "speakingSpeed": "Too Short / Slow"
+        }
+      },
+      {
+        "questionText": "Describe a complex performance bottleneck you've debugged in a full-stack application (React front-end, Node.js back-end, MongoDB database). Detail your diagnostic process, the specific tools and metrics used, and the optimizations you implemented across different layers to resolve it.",
+        "answerText": "thrth",
+        "score": 0,
+        "feedback": "The provided answer 'thrth' is not a valid response and does not address any part of the complex performance bottleneck debugging question.",
+        "analysis": {
+          "fillerWords": [],
+          "fillerCount": 0,
+          "fluencyScore": 100,
+          "speakingSpeed": "Too Short / Slow"
+        }
+      },
+      {
+        "questionText": "You are tasked with building a new API for managing an inventory system using Node.js and MongoDB. How would you design the MongoDB schema for products, variations, and stock levels to support efficient queries for searching, filtering, and updating inventory? Additionally, how would you ensure data consistency for critical operations like reducing stock, and what API endpoints would you expose?",
+        "answerText": "ther",
+        "score": 0,
+        "feedback": "The provided answer is incomplete and does not address any part of the question regarding MongoDB schema design, data consistency, or API endpoints.",
+        "analysis": {
+          "fillerWords": [],
+          "fillerCount": 0,
+          "fluencyScore": 100,
+          "speakingSpeed": "Too Short / Slow"
+        }
+      }
+    ],
+    "overallFeedback": {
+      "technicalScore": 0,
+      "communicationScore": 100,
+      "confidenceScore": 60,
+      "summary": "The candidate's performance in this mock technical interview for Amazon was significantly below expectations, primarily due to a complete lack of substantive responses to all three complex technical questions. While maintaining strong eye contact and exhibiting a good confidence score, the inability to articulate any technical solutions or even attempt to address the problems posed indicates a severe gap in technical knowledge and problem-solving skills. This performance suggests a critical need for foundational technical preparation before re-attempting a similar interview.",
+      "weakAreas": [
+        "System Design & Scalability",
+        "Performance Debugging & Optimization",
+        "Database & API Design Principles"
+      ],
+      "behaviorFeedback": {
+        "pros": [
+          "Maintained strong eye contact throughout the session.",
+          "Exhibited a confident demeanor."
+        ],
+        "cons": [
+          "Showed noticeable signs of anxiety and fidgeting (30%), potentially affecting composure.",
+          "Lack of preparation evident in the inability to provide valid responses for technical questions."
+        ]
+      }
+    }
+  },
+  {
+    "_id": "m8uhqeb",
+    "status": "completed",
+    "createdAt": "2026-05-25T14:18:52.016Z",
+    "userId": "ed51ivc",
+    "type": "Technical",
+    "company": "Amazon",
+    "questions": [
+      {
+        "questionText": "How would you design a thread-safe cache system with LRU eviction policy?",
+        "answerText": "A thread-safe cache system with LRU eviction policy can be designed using a HashMap and a Doubly Linked List. The HashMap provides fast access to cache items, while the linked list maintains the order of usage. When the cache reaches its limit, the least recently used (LRU) item is removed. To make it thread-safe, synchronization mechanisms like synchronized methods or locks (ReentrantLock) are used so multiple threads can access the cache safely without data corruption.",
+        "score": 50,
+        "feedback": "Answer logged.",
+        "analysis": {
+          "fillerWords": [
+            "like",
+            "so"
+          ],
+          "fillerCount": 2,
+          "fluencyScore": 89,
+          "speakingSpeed": "Normal"
+        }
+      },
+      {
+        "questionText": "What is the difference between SQL and NoSQL database structures, and when would you use one over the other?",
+        "answerText": "SQL databases store data in a structured table format (rows and columns) with a fixed schema, while NoSQL databases store data in flexible formats like documents, key-value pairs, graphs, or columns without a fixed schema.\n\nUse SQL when data is structured and relationships are important (e.g., banking, student management systems).\nUse NoSQL when handling large, unstructured, or rapidly changing data (e.g., social media, real-time applications, big data systems).",
+        "score": 50,
+        "feedback": "Answer logged.",
+        "analysis": {
+          "fillerWords": [
+            "like"
+          ],
+          "fillerCount": 1,
+          "fluencyScore": 94,
+          "speakingSpeed": "Normal"
+        }
+      },
+      {
+        "questionText": "Explain the time and space complexity of sorting an array using QuickSort in average and worst-case scenarios.",
+        "answerText": "In QuickSort, the average-case time complexity is O(n log n) because the array is divided into nearly equal parts during partitioning. The worst-case time complexity is O(n²), which occurs when the pivot selection is poor (e.g., already sorted array). The space complexity is O(log n) in the average case due to recursive calls and O(n) in the worst case when recursion becomes unbalanced.",
+        "score": 50,
+        "feedback": "Answer logged.",
+        "analysis": {
+          "fillerWords": [],
+          "fillerCount": 0,
+          "fluencyScore": 100,
+          "speakingSpeed": "Normal"
+        }
+      }
+    ],
+    "overallFeedback": {
+      "technicalScore": 50,
+      "communicationScore": 94,
+      "confidenceScore": 80,
+      "summary": "Completed mock Technical interview for Amazon. Needs additional study of core technical details. ",
+      "weakAreas": [
+        "Technical Depth"
+      ],
+      "behaviorFeedback": {
+        "pros": [
+          "Maintained excellent eye contact with the camera, conveying confidence and engagement.",
+          "Expressions reflected high composure, poise, and readiness."
+        ],
+        "cons": [
+          "Subtle signs of anxiety (e.g. rapid blinking or minor fidgeting) were detected."
+        ]
+      }
+    }
+  }
+]

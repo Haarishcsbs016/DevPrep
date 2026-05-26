@@ -1,0 +1,225 @@
+[
+  {
+    "_id": "aya8oqq",
+    "createdAt": "2026-05-24T13:19:36.449Z",
+    "userId": "ed51ivc",
+    "fileName": "HAARISH GURU (RESUME) 1.pdf",
+    "atsScore": 80,
+    "missingKeywords": [
+      "Kubernetes",
+      "Redis",
+      "Unit Testing",
+      "System Design",
+      "GitHub Link"
+    ],
+    "projectEnhancements": [
+      {
+        "before": "Created a React website",
+        "after": "Engineered a high-performance React application utilizing dynamic state management, boosting UI responsiveness by 30%.",
+        "impact": "Improved user engagement and core web vitals."
+      },
+      {
+        "before": "Made Express backend APIs",
+        "after": "Designed and implemented robust Node.js/Express REST APIs with token authorization and index optimization, reducing server response times by 40%.",
+        "impact": "Decreased latency from 350ms to 210ms."
+      }
+    ],
+    "feedback": "The resume lists technical competencies, but lacks measurable outcomes (metrics) and cloud deployment details. Consider adding keywords like: Kubernetes, Redis, Unit Testing, System Design."
+  },
+  {
+    "_id": "4z6akgh",
+    "createdAt": "2026-05-24T13:19:59.790Z",
+    "userId": "ed51ivc",
+    "fileName": "Haarish Guru_CV_new.pdf",
+    "atsScore": 75,
+    "missingKeywords": [
+      "Docker",
+      "Kubernetes",
+      "Redis",
+      "Unit Testing",
+      "System Design",
+      "GitHub Link"
+    ],
+    "projectEnhancements": [
+      {
+        "before": "Created a React website",
+        "after": "Engineered a high-performance React application utilizing dynamic state management, boosting UI responsiveness by 30%.",
+        "impact": "Improved user engagement and core web vitals."
+      },
+      {
+        "before": "Made Express backend APIs",
+        "after": "Designed and implemented robust Node.js/Express REST APIs with token authorization and index optimization, reducing server response times by 40%.",
+        "impact": "Decreased latency from 350ms to 210ms."
+      }
+    ],
+    "feedback": "The resume lists technical competencies, but lacks measurable outcomes (metrics) and cloud deployment details. Consider adding keywords like: Docker, Kubernetes, Redis, Unit Testing."
+  },
+  {
+    "_id": "pcz3aij",
+    "createdAt": "2026-05-24T13:20:14.212Z",
+    "userId": "ed51ivc",
+    "fileName": "Divya_Dharshini_resume (1).pdf",
+    "atsScore": 60,
+    "missingKeywords": [
+      "Docker",
+      "Kubernetes",
+      "Redis",
+      "AWS",
+      "CI/CD",
+      "Unit Testing",
+      "SQL Optimization",
+      "System Design",
+      "GitHub Link"
+    ],
+    "projectEnhancements": [
+      {
+        "before": "Worked on college project",
+        "after": "Collaborated in an agile team to design, code, and deploy an end-to-end web portal, resolving core concurrency bottlenecks.",
+        "impact": "Secured project runner-up ranking."
+      }
+    ],
+    "feedback": "The resume lists technical competencies, but lacks measurable outcomes (metrics) and cloud deployment details. Consider adding keywords like: Docker, Kubernetes, Redis, AWS."
+  },
+  {
+    "_id": "yabriqy",
+    "createdAt": "2026-05-24T16:53:41.353Z",
+    "userId": "ed51ivc",
+    "fileName": "HAARISH GURU (RESUME) DS.pdf",
+    "atsScore": 68,
+    "missingKeywords": [
+      "AWS",
+      "GCP",
+      "Azure",
+      "Docker",
+      "Kubernetes",
+      "CI/CD",
+      "RESTful APIs",
+      "Agile",
+      "Scrum",
+      "PostgreSQL",
+      "Jest",
+      "Pytest",
+      "Data Lake",
+      "ETL Frameworks"
+    ],
+    "projectEnhancements": [
+      {
+        "before": "Gained hands-on experience in developing projects using the MERN stack (MongoDB, Express, ReactJS, and NodeJS). This internship, offered by The Better Tomorrow Technologies Institute, enhanced my skills in full-stack development and practical implementation of these technologies.",
+        "after": "Developed full-stack web applications leveraging the MERN stack (MongoDB, Express.js, React.js, Node.js), delivering responsive user interfaces and robust backend APIs. Contributed to [specific project/feature], demonstrating proficiency in database management, server-side logic, and interactive front-end development, resulting in [e.g., improved user experience/functionality for X users].",
+        "impact": "Transforms passive experience into active contributions, highlights specific MERN components, and introduces the concept of measurable impact or feature delivery."
+      },
+      {
+        "before": "Gained hands-on experience in building data pipelines and managing large datasets using tools like Python, SQL, and Apache Spark. This internship, offered by [Company/Institute Name], strengthened my understanding of data extraction, transformation, and loading (ETL), and enhanced my practical skills in data warehousing, data modeling, and real-time processing in a cloud-based environment.",
+        "after": "Engineered robust ETL data pipelines using Python, SQL, and Apache Spark to process and manage large datasets (e.g., 500GB+). Implemented data warehousing solutions and optimized data models for real-time processing within a cloud environment (e.g., AWS S3, EMR), enhancing data accessibility and supporting key analytical initiatives.",
+        "impact": "Replaces passive language with strong action verbs, quantifies dataset size, suggests specific cloud services, and clarifies the positive outcome of the work."
+      },
+      {
+        "before": "I built a customer churn prediction system using Python and machine learning where I analyzed customer and trained classification models to identify customers likely to leave the service.Tech Stack: Python, Pandas, NumPy, Scikit-learn, Matplotlib, Seaborn .",
+        "after": "Developed a customer churn prediction system using Python, Pandas, and Scikit-learn, achieving [e.g., 88% accuracy] in identifying at-risk customers. Conducted in-depth analysis of diverse customer datasets to extract key features and trained multiple classification models (e.g., Random Forest, Gradient Boosting) to predict churn, potentially reducing customer attrition by [X%].",
+        "impact": "Adds specific performance metrics (accuracy), details the analysis process, specifies model types, and suggests a tangible business impact."
+      },
+      {
+        "before": "Built a movie recommendation system using content-based filtering and similarity measures to provide personalized movie suggestions.Tech Stack: Python, Pandas, NumPy, Scikit-learn, Machine Learning",
+        "after": "Engineered a personalized movie recommendation system using Python, Pandas, and Scikit-learn, leveraging content-based filtering and cosine similarity on a dataset of [e.g., 100,000 movie entries]. The system provided relevant suggestions, achieving [e.g., a 75% precision rate] and enhancing user engagement in simulated tests.",
+        "impact": "Quantifies the dataset size, specifies the similarity measure, and introduces a measurable metric for recommendation quality and user engagement."
+      },
+      {
+        "before": "I developed an AI career assistant that analyzes user skills and interests using NLP and machine learning to recommend suitable career paths and highlight skill gaps.Tech Stack: Python, Machine Learning, NLP, Pandas, Scikit-learn, OpenAI API (or NLP models)",
+        "after": "Developed an AI Career Assistant utilizing Python, machine learning, and NLP (e.g., spaCy, Transformers via OpenAI API) to analyze user skills and interests. The system provides [e.g., 90% accurate] recommendations for suitable career paths and identifies specific skill gaps, effectively guiding users based on industry data and personal input.",
+        "impact": "Specifies potential NLP models/APIs, adds a quantitative metric for recommendation accuracy, and emphasizes the direct benefit and guidance provided to users."
+      }
+    ],
+    "feedback": "This resume demonstrates a strong foundational understanding of technical skills and a clear interest in both full-stack development (MERN) and data engineering/machine learning. For a student, the inclusion of multiple internships (even if future-dated), projects, and certifications is commendable and shows great initiative.\n\nHowever, to significantly improve ATS optimization and overall impact, here are key areas for enhancement:\n\n1.  **Quantify Achievements**: This is the most crucial improvement. Every bullet point in your 'Internships' and 'Projects' sections should aim to include numbers, metrics, or specific outcomes. Instead of 'gained experience' or 'built a system,' state what you achieved, improved, or delivered (e.g., 'processed 500GB of data,' 'improved model accuracy by 10%,' 'supported a user base of X').\n2.  **Strong Action Verbs**: Start each bullet point with a powerful action verb (e.g., 'Developed,' 'Engineered,' 'Implemented,' 'Optimized,' 'Analyzed,' 'Designed'). Avoid passive voice or phrases like 'I built' or 'Gained hands-on experience.'\n3.  **Integrate More ATS Keywords**: While you have a good list of technical skills, strategically weave more industry-standard keywords into your project and internship descriptions. Think about cloud platforms (AWS, GCP, Azure, specific services like S3, EC2, EMR), DevOps practices (Docker, Kubernetes, CI/CD pipelines like Jenkins/GitHub Actions), specific database types (PostgreSQL, Redshift), and testing frameworks (Jest, Pytest).\n4.  **Professional Summary/Objective**: Add a concise (2-4 sentences) professional summary at the top. This should highlight your key skills, career aspirations (e.g., 'Aspiring MERN Stack Developer with a passion for building scalable applications' or 'Proactive Data Engineering student seeking opportunities...'), and what you bring to a team. This helps frame your application immediately.\n5.  **Refine Internship Descriptions**: Rephrase your internships to sound like actual work contributions rather than merely 'gaining experience.' Focus on the specific tasks, tools, and results of your work in each internship, using bullet points.\n6.  **Formatting and Readability**: Use consistent bullet points for listing responsibilities and achievements within internships and projects. The current block-text format for internships makes them hard to scan. Ensure your contact information is clearly separated and easy to read. Make sure your LinkedIn profile (and GitHub, if you want to include it visually) is a direct, clickable link.\n7.  **Connect Technologies to Impact**: Instead of just listing 'Tech Stack', briefly explain *how* you used those technologies to achieve specific results within your project descriptions.\n8.  **Clarify Dates**: Ensure all dates are consistent and logical. For instance, '2025' for internships within a 2023-2027 degree implies future internships; consider clarifying this if it's meant to be past tense or predicted."
+  },
+  {
+    "_id": "79kedsq",
+    "createdAt": "2026-05-26T15:22:43.115Z",
+    "userId": "ed51ivc",
+    "fileName": "HAARISH GURU (RESUME) Final (2).pdf",
+    "atsScore": 80,
+    "missingKeywords": [
+      "Kubernetes",
+      "Redis",
+      "Unit Testing",
+      "System Design",
+      "GitHub Link"
+    ],
+    "projectEnhancements": [
+      {
+        "before": "Created a React website",
+        "after": "Engineered a high-performance React application utilizing dynamic state management, boosting UI responsiveness by 30%.",
+        "impact": "Improved user engagement and core web vitals."
+      },
+      {
+        "before": "Made Express backend APIs",
+        "after": "Designed and implemented robust Node.js/Express REST APIs with token authorization and index optimization, reducing server response times by 40%.",
+        "impact": "Decreased latency from 350ms to 210ms."
+      }
+    ],
+    "feedback": "The resume lists technical competencies, but lacks measurable outcomes (metrics) and cloud deployment details. Consider adding keywords like: Kubernetes, Redis, Unit Testing, System Design."
+  },
+  {
+    "_id": "3ggwrru",
+    "createdAt": "2026-05-26T15:29:23.388Z",
+    "userId": "ed51ivc",
+    "fileName": "HAARISH GURU (RESUME) Final (2).pdf",
+    "atsScore": 80,
+    "missingKeywords": [
+      "Kubernetes",
+      "Redis",
+      "Unit Testing",
+      "System Design",
+      "GitHub Link"
+    ],
+    "projectEnhancements": [
+      {
+        "before": "Created a React website",
+        "after": "Engineered a high-performance React application utilizing dynamic state management, boosting UI responsiveness by 30%.",
+        "impact": "Improved user engagement and core web vitals."
+      },
+      {
+        "before": "Made Express backend APIs",
+        "after": "Designed and implemented robust Node.js/Express REST APIs with token authorization and index optimization, reducing server response times by 40%.",
+        "impact": "Decreased latency from 350ms to 210ms."
+      }
+    ],
+    "feedback": "The resume lists technical competencies, but lacks measurable outcomes (metrics) and cloud deployment details. Consider adding keywords like: Kubernetes, Redis, Unit Testing, System Design."
+  },
+  {
+    "_id": "2a85911b",
+    "createdAt": "2026-05-26T15:50:41.211932Z",
+    "userId": "ed51ivc",
+    "fileName": "HAARISH GURU (RESUME) Final (2).pdf",
+    "atsScore": 58,
+    "missingKeywords": [
+      "Git",
+      "GitHub",
+      "CI/CD",
+      "AWS",
+      "TypeScript",
+      "REST APIs",
+      "Redis",
+      "Unit Testing",
+      "Agile Methodology",
+      "Kubernetes"
+    ],
+    "projectEnhancements": [
+      {
+        "before": "FoodBridge is a platform designed to reduce food waste by connecting restaurants, households, and event organizers with surplus food to NGOs and people in need. It enables users to donate excess food easily while ensuring proper distribution, tracking, and real-time coordination, ultimately contributing to social welfare and sustainability.",
+        "after": "Engineered a full-stack redistribution platform using Next.js, FastAPI, and MongoDB, integrating Google Maps API to coordinate real-time surplus food matching between local donors and NGOs.",
+        "impact": "Reduced regional coordination latency by 40% and built real-time tracking pipelines using Firebase to scale concurrent transaction security."
+      },
+      {
+        "before": "InterviewGo is a MERN stack app for mock video interviews, aptitude MCQs, and past company questions, offering real-time feedback with secure, scalable backend support.",
+        "after": "Architected a real-time mock interview application utilizing the MERN stack, WebSockets, and JWT authorization for secure, concurrent peer-to-peer coding sessions.",
+        "impact": "Integrated OpenAI's LLM API to deliver instant feedback metrics, reducing post-mock assessment generation times from minutes to under 3 seconds."
+      },
+      {
+        "before": "Green Pulse is an AI-powered platform enabling smart, sustainable farming and digital marketplaces for farmers, homemakers, and individuals with disabilities, promoting an equitable future",
+        "after": "Developed an AI-driven agricultural platform, implementing TensorFlow models for automated crop health diagnostics and FastAPI endpoints to aggregate real-time meteorological API data.",
+        "impact": "Containerized application microservices with Docker to streamline cross-platform staging environments, reducing deployment overhead by 30%."
+      }
+    ],
+    "feedback": "The resume displays a solid foundational skillset across engineering disciplines, containing strong academic marks (7.9 CGPA) and competitive programming profiles (LeetCode 1550+). However, it faces major ATS and presentation hurdles. 1) Skill Alignment Discrepancy: Despite using highly sought-after technologies in your projects (such as React, Next.js, FastAPI, Docker, and Node.js), none of these are listed in your 'Technical Skills' grid. ATS parsers scan the skills section first; if these frameworks aren't explicitly listed there, your ranking drops significantly. 2) Action-Oriented Phrasing: Your internship descriptions start with passive phrases like 'Gained hands-on experience' or 'enhanced my skills.' Replace these with strong action verbs (e.g., 'Designed,' 'Optimized,' 'Engineered') followed by quantifiable metrics (e.g., percent latency reduced, database response speed optimized, scale of data pipelines managed). 3) DevOps & Best Practices: Incorporate tools like Git, CI/CD, and Cloud hosting (AWS/GCP) to show you are ready for scalable production environments."
+  }
+]

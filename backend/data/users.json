@@ -1,0 +1,79 @@
+[
+  {
+    "_id": "ed51ivc",
+    "onboardingCompleted": true,
+    "profile": {
+      "targetRole": "Full Stack Developer",
+      "knownSkills": [
+        "React",
+        "Node.js",
+        "JavaScript",
+        "MongoDB"
+      ],
+      "weakAreas": [
+        "Operating Systems",
+        "Dynamic Programming"
+      ],
+      "targetCompanies": [
+        "Amazon",
+        "TCS"
+      ],
+      "dsaConfidence": "Intermediate"
+    },
+    "githubUsername": "haarishcsbs016",
+    "leetcodeUsername": "haarishcsbs016",
+    "createdAt": "2026-05-24T12:12:59.486Z",
+    "name": "hi",
+    "email": "haarishguru28@gmail.com",
+    "password": "$2a$10$4UvG2g/CZbzYgO9731VlhuLDHCkTUlF1xxcN7ppLHcJvBc9RUHO.O",
+    "completedRoadmapTasks": [
+      "Week 1||Solve 5 advanced problems on Trees and Graphs",
+      "Week 1||Re-format resume for ATS parser compatibility",
+      "Week 1||Implement Dijkstra's algorithm and BFS traversals",
+      "Week 1||Integrate GitHub and portfolio links to resume header",
+      "Week 1||Reconstruct resume layout to a single-column, ATS-friendly format aiming for an ATS score above 80",
+      "Week 1||Study Operating Systems memory management, paging, and segmentation concepts",
+      "Week 1||Add key technical keywords matching Full Stack Developer roles (React, Node, Express, MongoDB, REST APIs) to the resume profile",
+      "Week 1||Solve 12 high-frequency LeetCode Easy/Medium problems on Arrays, Hashing, and Two Pointers",
+      "Week 2||Solve 10 classic 1D and 2D Dynamic Programming problems (Knapsack, Longest Common Subsequence, Coin Change)",
+      "Week 2||Deep dive into OS Deadlocks (Detection, Prevention) and Virtual Memory concepts",
+      "Week 2||Build and host a minor optimization on your existing React-Node stack (e.g., JWT Authentication or Redis caching) to showcase on the resume",
+      "Week 2||Conduct a peer-to-peer mock interview focused purely on JavaScript, Node.js, and MongoDB system-level questions",
+      "Week 3||Solve 12 Medium problems on LinkedLists, Trees, and Graphs (heavily tested at Amazon)",
+      "Week 3||Review TCS NQT specific quantitative aptitude, logical reasoning, and verbal topics",
+      "Week 3||Study High-Level System Design concepts: Load Balancers, Sharding, and MVC Architecture",
+      "Week 3||Prepare STAR-method behavioral stories aligning with Amazon's Leadership Principles (Ownership, Bias for Action)",
+      "Week 4||Attempt 3 timed online coding assessments simulating Amazon's OA environment",
+      "Week 4||Complete 2 Full-Stack mock interviews covering system integration, coding, and CS fundamentals",
+      "Week 4||Revise cheat sheets for Dynamic Programming state transitions and Operating Systems commands"
+    ]
+  },
+  {
+    "_id": "qu8hypr",
+    "onboardingCompleted": true,
+    "profile": {
+      "targetRole": "Backend Developer",
+      "knownSkills": [
+        "React",
+        "Node.js",
+        "JavaScript",
+        "MongoDB"
+      ],
+      "weakAreas": [
+        "Operating Systems",
+        "Dynamic Programming"
+      ],
+      "targetCompanies": [
+        "Amazon",
+        "TCS"
+      ],
+      "dsaConfidence": "Intermediate"
+    },
+    "githubUsername": "haarishcsbs016",
+    "leetcodeUsername": "haarishcsbs016",
+    "createdAt": "2026-05-24T17:01:18.573Z",
+    "name": "doe",
+    "email": "haarishguru@gmail.com",
+    "password": "$2a$10$qOtwCWoF352Z4nAO3RTg/Ocuyb9Ef3rS7sbiBqNIyNRo.ZFSl/xDK"
+  }
+]
