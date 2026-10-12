@@ -41,7 +41,7 @@
       }
     ],
     "streak": 1,
-    "lastActive": "2026-05-25T13:48:28.307Z",
+    "lastActive": "2026-10-12T14:34:09.667Z",
     "userId": "ed51ivc",
     "topic": "Arrays"
   },
@@ -69,17 +69,29 @@
   },
   {
     "_id": "4jethk5",
-    "solvedCount": 1,
+    "solvedCount": 3,
     "solvedProblems": [
       {
         "title": "Merge Two Sorted Lists",
         "difficulty": "Easy",
         "platform": "Internal",
         "solvedAt": "2026-05-25T13:48:32.874Z"
+      },
+      {
+        "title": "Merge k Sorted Lists",
+        "difficulty": "Hard",
+        "platform": "Internal",
+        "solvedAt": "2026-06-01T09:43:07.902Z"
+      },
+      {
+        "title": "Remove Nth Node From End of List",
+        "difficulty": "Medium",
+        "platform": "Internal",
+        "solvedAt": "2026-06-01T09:43:09.093Z"
       }
     ],
     "streak": 1,
-    "lastActive": "2026-05-25T13:48:32.874Z",
+    "lastActive": "2026-06-01T09:43:09.093Z",
     "userId": "ed51ivc",
     "topic": "Linked List"
   },
@@ -107,19 +119,63 @@
   },
   {
     "_id": "wrm94so",
-    "solvedCount": 0,
-    "solvedProblems": [],
-    "streak": 0,
-    "lastActive": "2026-05-24T13:09:00.740Z",
+    "solvedCount": 3,
+    "solvedProblems": [
+      {
+        "title": "Clone Graph",
+        "difficulty": "Medium",
+        "platform": "Internal",
+        "solvedAt": "2026-06-17T04:38:38.261Z"
+      },
+      {
+        "title": "Number of Islands",
+        "difficulty": "Medium",
+        "platform": "Internal",
+        "solvedAt": "2026-06-17T04:38:51.408Z"
+      },
+      {
+        "title": "Flood Fill",
+        "difficulty": "Easy",
+        "platform": "Internal",
+        "solvedAt": "2026-06-17T04:38:55.650Z"
+      }
+    ],
+    "streak": 1,
+    "lastActive": "2026-06-17T04:38:55.650Z",
     "userId": "ed51ivc",
     "topic": "Graphs"
   },
   {
     "_id": "72y74p0",
-    "solvedCount": 0,
-    "solvedProblems": [],
-    "streak": 0,
-    "lastActive": "2026-05-24T13:09:00.741Z",
+    "solvedCount": 4,
+    "solvedProblems": [
+      {
+        "title": "House Robber",
+        "difficulty": "Medium",
+        "platform": "Internal",
+        "solvedAt": "2026-06-01T10:17:19.356Z"
+      },
+      {
+        "title": "Longest Common Subsequence",
+        "difficulty": "Medium",
+        "platform": "Internal",
+        "solvedAt": "2026-06-01T10:17:20.344Z"
+      },
+      {
+        "title": "Coin Change",
+        "difficulty": "Medium",
+        "platform": "Internal",
+        "solvedAt": "2026-06-01T10:17:23.090Z"
+      },
+      {
+        "title": "Edit Distance",
+        "difficulty": "Hard",
+        "platform": "Internal",
+        "solvedAt": "2026-06-01T10:17:24.839Z"
+      }
+    ],
+    "streak": 1,
+    "lastActive": "2026-06-01T10:17:24.839Z",
     "userId": "ed51ivc",
     "topic": "Dynamic Programming"
   },
@@ -134,10 +190,23 @@
   },
   {
     "_id": "8bp4rm1",
-    "solvedCount": 0,
-    "solvedProblems": [],
-    "streak": 0,
-    "lastActive": "2026-05-24T13:09:00.747Z",
+    "solvedCount": 2,
+    "solvedProblems": [
+      {
+        "title": "N-Queens",
+        "difficulty": "Hard",
+        "platform": "Internal",
+        "solvedAt": "2026-06-07T15:02:13.051Z"
+      },
+      {
+        "title": "Palindromic Partitioning",
+        "difficulty": "Hard",
+        "platform": "Internal",
+        "solvedAt": "2026-06-07T15:02:14.039Z"
+      }
+    ],
+    "streak": 1,
+    "lastActive": "2026-06-07T15:02:14.039Z",
     "userId": "ed51ivc",
     "topic": "Backtracking"
   },
@@ -211,6 +280,78 @@
     "streak": 0,
     "lastActive": "2026-05-24T17:01:38.208Z",
     "userId": "qu8hypr",
+    "topic": "Backtracking"
+  },
+  {
+    "_id": "t7phc6a",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-06-01T13:49:52.315Z",
+    "userId": "hlv8g0z",
+    "topic": "Arrays"
+  },
+  {
+    "_id": "24o67yh",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-06-01T13:49:52.316Z",
+    "userId": "hlv8g0z",
+    "topic": "Strings"
+  },
+  {
+    "_id": "l3fhy5n",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-06-01T13:49:52.317Z",
+    "userId": "hlv8g0z",
+    "topic": "Linked List"
+  },
+  {
+    "_id": "k2zd0t0",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-06-01T13:49:52.317Z",
+    "userId": "hlv8g0z",
+    "topic": "Trees"
+  },
+  {
+    "_id": "xfg2i4k",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-06-01T13:49:52.318Z",
+    "userId": "hlv8g0z",
+    "topic": "Graphs"
+  },
+  {
+    "_id": "4lc3xh2",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-06-01T13:49:52.319Z",
+    "userId": "hlv8g0z",
+    "topic": "Dynamic Programming"
+  },
+  {
+    "_id": "z9dx542",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-06-01T13:49:52.319Z",
+    "userId": "hlv8g0z",
+    "topic": "Recursion"
+  },
+  {
+    "_id": "pl8qhs8",
+    "solvedCount": 0,
+    "solvedProblems": [],
+    "streak": 0,
+    "lastActive": "2026-06-01T13:49:52.320Z",
+    "userId": "hlv8g0z",
     "topic": "Backtracking"
   }
 ]

@@ -33,6 +33,38 @@ const userSchema = new mongoose.Schema({
   },
   githubUsername: { type: String, default: '' },
   leetcodeUsername: { type: String, default: '' },
+  hackerrankUsername: { type: String, default: '' },
+  hackerearthUsername: { type: String, default: '' },
+  profileStats: {
+    leetcode: {
+      solved: { type: Number, default: 0 },
+      easySolved: { type: Number, default: 0 },
+      mediumSolved: { type: Number, default: 0 },
+      hardSolved: { type: Number, default: 0 },
+      rating: { type: Number, default: 1500 },
+      ranking: { type: Number, default: 0 }
+    },
+    hackerrank: {
+      stars: {
+        java: { type: Number, default: 0 },
+        sql: { type: Number, default: 0 },
+        cpp: { type: Number, default: 0 },
+        python: { type: Number, default: 0 },
+        algorithms: { type: Number, default: 0 }
+      },
+      badges: { type: [String], default: [] }
+    },
+    hackerearth: {
+      solved: { type: Number, default: 0 },
+      rating: { type: Number, default: 0 }
+    },
+    github: {
+      commits: { type: Number, default: 0 },
+      repos: { type: Number, default: 0 },
+      stars: { type: Number, default: 0 }
+    },
+    lastSynced: { type: Date, default: null }
+  },
   createdAt: {
     type: Date,
     default: Date.now,
