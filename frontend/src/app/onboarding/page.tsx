@@ -19,6 +19,8 @@ export default function OnboardingPage() {
   const [targetCompaniesInput, setTargetCompaniesInput] = useState('Amazon, TCS');
   const [githubUsername, setGithubUsername] = useState('');
   const [leetcodeUsername, setLeetcodeUsername] = useState('');
+  const [hackerrankUsername, setHackerrankUsername] = useState('');
+  const [hackerearthUsername, setHackerearthUsername] = useState('');
 
   const nextStep = () => setStep((s) => s + 1);
   const prevStep = () => setStep((s) => s - 1);
@@ -42,6 +44,8 @@ export default function OnboardingPage() {
           onboardingCompleted: true,
           githubUsername: githubUsername.trim(),
           leetcodeUsername: leetcodeUsername.trim(),
+          hackerrankUsername: hackerrankUsername.trim(),
+          hackerearthUsername: hackerearthUsername.trim(),
           profile: {
             targetRole,
             dsaConfidence,
@@ -269,6 +273,32 @@ export default function OnboardingPage() {
                   placeholder="e.g. dsa_champion"
                   value={leetcodeUsername}
                   onChange={(e) => setLeetcodeUsername(e.target.value)}
+                  className="w-full bg-[#0a051d] text-white px-4 py-2.5 rounded-xl border border-violet-950 focus:border-violet-500 focus:outline-none text-sm transition"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-violet-300 mb-1.5 uppercase font-mono">
+                  HackerRank Username
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. haarishcsbs016"
+                  value={hackerrankUsername}
+                  onChange={(e) => setHackerrankUsername(e.target.value)}
+                  className="w-full bg-[#0a051d] text-white px-4 py-2.5 rounded-xl border border-violet-950 focus:border-violet-500 focus:outline-none text-sm transition"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-violet-300 mb-1.5 uppercase font-mono">
+                  HackerEarth Username
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Haarish Guru"
+                  value={hackerearthUsername}
+                  onChange={(e) => setHackerearthUsername(e.target.value)}
                   className="w-full bg-[#0a051d] text-white px-4 py-2.5 rounded-xl border border-violet-950 focus:border-violet-500 focus:outline-none text-sm transition"
                 />
               </div>

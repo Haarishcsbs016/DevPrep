@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from '../store/useStore';
+import { buildGeminiKeyPool, isGeminiQuotaError } from '../lib/geminiKeys';
 import { 
   MessageSquare, 
   Send, 
@@ -37,7 +38,7 @@ export default function AIChatbotWidget() {
         {
           id: 'welcome',
           sender: 'assistant',
-          text: `Hi ${user.name}! I am your DevPrep AI Assistant. \n\nI can help you review DSA patterns, write clean code, refine your resume bullet points, or practice mock interview questions. What would you like to build or learn today?`,
+          text: `Hi ${user.name}! I am your DevPrep AI Assistant. \n\nI can help you review DSA patterns, write clean code, or refine your resume bullet points. What would you like to build or learn today?`,
           timestamp: new Date()
         }
       ]);
@@ -77,7 +78,7 @@ export default function AIChatbotWidget() {
     try {
       // Build context prompts for Gemini
       const systemPrompt = `You are DevPrep Assistant, an expert AI tutor specializing in software engineering placement preparation. 
-      You help engineering students master Data Structures & Algorithms (DSA), optimize resumes for ATS checkers, review core subjects (OS, DBMS, Computer Networks), and prepare for mock HR, Technical, and Coding interviews.
+      You help engineering students master Data Structures & Algorithms (DSA), optimize resumes for ATS checkers, and review core subjects (OS, DBMS, Computer Networks).
       Ensure your answers are technically accurate, professional, structured, and helpful. Always format code snippets using markdown code blocks (e.g. \`\`\`javascript ... \`\`\`).
       Current User profile: Target Role is ${user.profile.targetRole || 'Software Engineer'}, knows skills: ${user.profile.knownSkills?.join(', ') || 'general development'}, target companies: ${user.profile.targetCompanies?.join(', ') || 'top product companies'}.`;
 
@@ -100,24 +101,44 @@ export default function AIChatbotWidget() {
         }
       ];
 
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ contents })
-        }
-      );
-
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.error?.message || 'Error communicating with Gemini');
+      const keyPool = buildGeminiKeyPool(geminiKey);
+      if (keyPool.length === 0) {
+        throw new Error('No Gemini API keys are configured. Add at least one key in Settings.');
       }
 
-      const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm sorry, I couldn't formulate a response.";
+      let replyText = '';
+      let lastError: string | null = null;
+
+      for (const key of keyPool) {
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ contents })
+          }
+        );
+
+        const data = await response.json();
+
+        if (response.ok) {
+          replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm sorry, I couldn't formulate a response.";
+          lastError = null;
+          break;
+        }
+
+        const errorMessage = data.error?.message || 'Error communicating with Gemini';
+        lastError = errorMessage;
+        if (!isGeminiQuotaError(errorMessage)) {
+          continue;
+        }
+      }
+
+      if (!replyText) {
+        throw new Error(lastError || 'Error communicating with Gemini');
+      }
       
       const assistantMsg: Message = {
         id: Math.random().toString(36).substring(7),
@@ -131,7 +152,7 @@ export default function AIChatbotWidget() {
       console.warn("Gemini widget API error:", e);
       let errMsg = e.message || 'Please check your internet connection or API settings.';
       if (errMsg.toLowerCase().includes('quota') || errMsg.toLowerCase().includes('rate limit') || errMsg.toLowerCase().includes('limit exceeded')) {
-        errMsg = "⚠️ **Gemini Free Tier Quota Exceeded**. You have hit the rate limit for model requests. Please wait a moment (30–60 seconds) before sending another message.";
+        errMsg = "⚠️ **Gemini Free Tier Quota Exceeded**. The widget tried the next configured key automatically, but all available keys are currently rate-limited. Please wait a moment (30–60 seconds) before sending another message.";
       }
       setMessages(prev => [
         ...prev,
@@ -219,12 +240,15 @@ export default function AIChatbotWidget() {
               <button 
                 onClick={clearChat}
                 title="Clear Chat History"
+                aria-label="Clear chat history"
                 className="p-1.5 rounded-lg text-violet-400 hover:text-white hover:bg-violet-950 transition"
               >
                 <Trash2 className="h-4 w-4" />
               </button>
               <button 
                 onClick={() => setIsOpen(false)}
+                title="Close chatbot"
+                aria-label="Close chatbot"
                 className="p-1.5 rounded-lg text-violet-400 hover:text-white hover:bg-violet-950 transition"
               >
                 <X className="h-4 w-4" />
@@ -321,6 +345,8 @@ export default function AIChatbotWidget() {
             <button
               type="submit"
               disabled={!input.trim() || loading}
+              title="Send message"
+              aria-label="Send message"
               className="p-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-pink-500 text-white hover:brightness-110 disabled:opacity-40 transition shadow-lg flex items-center justify-center shrink-0 cursor-pointer"
             >
               <Send className="h-3.5 w-3.5" />
@@ -333,6 +359,8 @@ export default function AIChatbotWidget() {
       {/* Floating Bubble Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
+        title={isOpen ? 'Close chatbot' : 'Open chatbot'}
+        aria-label={isOpen ? 'Close chatbot' : 'Open chatbot'}
         className="h-12 w-12 rounded-full bg-gradient-to-tr from-violet-600 to-pink-500 text-white flex items-center justify-center shadow-lg shadow-violet-500/20 hover:scale-105 hover:rotate-3 active:scale-95 transition-all duration-300 cursor-pointer group relative"
       >
         {isOpen ? (
