@@ -4,7 +4,7 @@ import ClientLayoutWrapper from "../components/ClientLayoutWrapper";
 
 export const metadata: Metadata = {
   title: "DevPrep AI — AI-Powered Placement OS",
-  description: "AI-powered placement preparation platform for engineering students to master DSA, optimize resumes, run mock voice interviews, and review concepts with RAG tutoring.",
+  description: "AI-powered placement preparation platform for engineering students to master DSA, optimize resumes, study with RAG AI mentor, and chat with Gemini AI.",
 };
 
 export default function RootLayout({

@@ -17,7 +17,21 @@ router.get('/history', protect, async (req, res) => {
 
 // Save a new resume analysis report
 router.post('/analysis', protect, async (req, res) => {
-  const { fileName, atsScore, missingKeywords, projectEnhancements, feedback } = req.body;
+  const {
+    fileName,
+    atsScore,
+    grade,
+    sectionScores,
+    missingKeywords,
+    atsRisks,
+    rewriteRecommendations,
+    projectEnhancements,
+    feedback,
+    sourceType,
+    jobDescription,
+    matchedKeywords,
+    jobKeywords
+  } = req.body;
 
   if (!fileName || atsScore === undefined) {
     return res.status(400).json({ message: 'fileName and atsScore are required' });
@@ -28,9 +42,17 @@ router.post('/analysis', protect, async (req, res) => {
       userId: req.user._id,
       fileName,
       atsScore,
+      grade: grade || '',
+      sectionScores: sectionScores || [],
       missingKeywords: missingKeywords || [],
+      atsRisks: atsRisks || [],
+      rewriteRecommendations: rewriteRecommendations || [],
       projectEnhancements: projectEnhancements || [],
-      feedback: feedback || ''
+      feedback: feedback || '',
+      sourceType: sourceType || 'pdf',
+      jobDescription: jobDescription || '',
+      matchedKeywords: matchedKeywords || [],
+      jobKeywords: jobKeywords || []
     });
 
     res.status(201).json(report);

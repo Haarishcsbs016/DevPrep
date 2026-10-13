@@ -16,7 +16,6 @@ const dsaProgressSchema = new mongoose.Schema({
   },
   topic: {
     type: String,
-    enum: ['Arrays', 'Strings', 'Linked List', 'Trees', 'Graphs', 'Dynamic Programming', 'Recursion', 'Backtracking'],
     required: true
   },
   solvedCount: { type: Number, default: 0 },

@@ -109,6 +109,15 @@ export const fallbackDB = {
         completedRoadmapTasks: [],
         githubUsername: '',
         leetcodeUsername: '',
+        hackerrankUsername: '',
+        hackerearthUsername: '',
+        profileStats: {
+          leetcode: { solved: 0, easySolved: 0, mediumSolved: 0, hardSolved: 0, rating: 1500, ranking: 0 },
+          hackerrank: { stars: { java: 0, sql: 0, cpp: 0, python: 0, algorithms: 0 }, badges: [] },
+          hackerearth: { solved: 0, rating: 0 },
+          github: { commits: 0, repos: 0, stars: 0 },
+          lastSynced: null
+        },
         createdAt: new Date().toISOString(),
         ...userData
       };
@@ -172,30 +181,7 @@ export const fallbackDB = {
     }
   },
 
-  // Interviews CRUD
-  interviews: {
-    find: (query) => {
-      const interviews = readJSON('interviews.json');
-      let result = interviews.filter(i => i.userId === query.userId.toString());
-      if (query.status) {
-        result = result.filter(i => i.status === query.status);
-      }
-      return makeThenableQuery(Promise.resolve(result));
-    },
-    create: async (interviewData) => {
-      const interviews = readJSON('interviews.json');
-      const newSession = {
-        _id: Math.random().toString(36).substring(2, 9),
-        status: 'completed',
-        createdAt: new Date().toISOString(),
-        ...interviewData,
-        userId: interviewData.userId.toString()
-      };
-      interviews.push(newSession);
-      writeJSON('interviews.json', interviews);
-      return newSession;
-    }
-  },
+
 
   // Resumes CRUD
   resumes: {
@@ -215,6 +201,78 @@ export const fallbackDB = {
       resumes.push(newReport);
       writeJSON('resumes.json', resumes);
       return newReport;
+    }
+  },
+
+  // Bookmarks CRUD
+  bookmarks: {
+    find: (query) => {
+      const bookmarks = readJSON('bookmarks.json');
+      let filtered = bookmarks;
+      if (query?.userId) {
+        filtered = filtered.filter(b => b.userId === query.userId.toString());
+      }
+      if (query?.problemId) {
+        filtered = filtered.filter(b => b.problemId === query.problemId);
+      }
+      return makeThenableQuery(Promise.resolve(filtered));
+    },
+    findOne: (query) => {
+      const bookmarks = readJSON('bookmarks.json');
+      const item = bookmarks.find(b =>
+        (!query.userId || b.userId === query.userId.toString()) &&
+        (!query.problemId || b.problemId === query.problemId)
+      ) || null;
+      return makeThenableQuery(Promise.resolve(item));
+    },
+    create: async (data) => {
+      const bookmarks = readJSON('bookmarks.json');
+      const newBookmark = {
+        _id: Math.random().toString(36).substring(2, 9),
+        createdAt: new Date().toISOString(),
+        ...data,
+        userId: data.userId.toString()
+      };
+      bookmarks.push(newBookmark);
+      writeJSON('bookmarks.json', bookmarks);
+      return newBookmark;
+    },
+    deleteOne: async (query) => {
+      let bookmarks = readJSON('bookmarks.json');
+      const initialLen = bookmarks.length;
+      bookmarks = bookmarks.filter(b => !(
+        (!query.userId || b.userId === query.userId.toString()) &&
+        (!query.problemId || b.problemId === query.problemId)
+      ));
+      writeJSON('bookmarks.json', bookmarks);
+      return { deletedCount: initialLen - bookmarks.length };
+    }
+  },
+
+  // Submissions CRUD
+  submissions: {
+    find: (query) => {
+      const submissions = readJSON('submissions.json');
+      let filtered = submissions;
+      if (query?.userId) {
+        filtered = filtered.filter(s => s.userId === query.userId.toString());
+      }
+      if (query?.problemId) {
+        filtered = filtered.filter(s => s.problemId === query.problemId);
+      }
+      return makeThenableQuery(Promise.resolve(filtered));
+    },
+    create: async (data) => {
+      const submissions = readJSON('submissions.json');
+      const newSub = {
+        _id: Math.random().toString(36).substring(2, 9),
+        createdAt: new Date().toISOString(),
+        ...data,
+        userId: data.userId.toString()
+      };
+      submissions.push(newSub);
+      writeJSON('submissions.json', submissions);
+      return newSub;
     }
   }
 };

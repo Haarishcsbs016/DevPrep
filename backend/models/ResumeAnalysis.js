@@ -15,9 +15,17 @@ const resumeAnalysisSchema = new mongoose.Schema({
   },
   fileName: { type: String, required: true },
   atsScore: { type: Number, required: true },
+  grade: { type: String, default: '' },
+  sectionScores: { type: Array, default: [] },
   missingKeywords: { type: [String], default: [] },
+  atsRisks: { type: [String], default: [] },
+  rewriteRecommendations: { type: [String], default: [] },
   projectEnhancements: [projectEnhancementSchema],
   feedback: { type: String, default: '' },
+  sourceType: { type: String, default: 'pdf' },
+  jobDescription: { type: String, default: '' },
+  matchedKeywords: { type: [String], default: [] },
+  jobKeywords: { type: [String], default: [] },
   createdAt: {
     type: Date,
     default: Date.now

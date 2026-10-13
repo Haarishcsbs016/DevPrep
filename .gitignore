@@ -1,0 +1,27 @@
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node.js dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+
+# Logs
+*.log
+
+# Temporary uploads
+ai-backend/temp_uploads/
+
+# Local database files - review before excluding
+# ai-backend/rag_vault.db

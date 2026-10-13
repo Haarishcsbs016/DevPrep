@@ -221,5 +221,59 @@
       }
     ],
     "feedback": "The resume displays a solid foundational skillset across engineering disciplines, containing strong academic marks (7.9 CGPA) and competitive programming profiles (LeetCode 1550+). However, it faces major ATS and presentation hurdles. 1) Skill Alignment Discrepancy: Despite using highly sought-after technologies in your projects (such as React, Next.js, FastAPI, Docker, and Node.js), none of these are listed in your 'Technical Skills' grid. ATS parsers scan the skills section first; if these frameworks aren't explicitly listed there, your ranking drops significantly. 2) Action-Oriented Phrasing: Your internship descriptions start with passive phrases like 'Gained hands-on experience' or 'enhanced my skills.' Replace these with strong action verbs (e.g., 'Designed,' 'Optimized,' 'Engineered') followed by quantifiable metrics (e.g., percent latency reduced, database response speed optimized, scale of data pipelines managed). 3) DevOps & Best Practices: Incorporate tools like Git, CI/CD, and Cloud hosting (AWS/GCP) to show you are ready for scalable production environments."
+  },
+  {
+    "_id": "1i0c9y3",
+    "createdAt": "2026-06-01T10:16:55.927Z",
+    "userId": "ed51ivc",
+    "fileName": "Haarish CV New final.pdf",
+    "atsScore": 80,
+    "missingKeywords": [
+      "Kubernetes",
+      "Redis",
+      "Unit Testing",
+      "System Design",
+      "GitHub Link"
+    ],
+    "projectEnhancements": [
+      {
+        "before": "Created a React website",
+        "after": "Engineered a high-performance React application utilizing dynamic state management, boosting UI responsiveness by 30%.",
+        "impact": "Improved user engagement and core web vitals."
+      },
+      {
+        "before": "Made Express backend APIs",
+        "after": "Designed and implemented robust Node.js/Express REST APIs with token authorization and index optimization, reducing server response times by 40%.",
+        "impact": "Decreased latency from 350ms to 210ms."
+      }
+    ],
+    "feedback": "The resume lists technical competencies, but lacks measurable outcomes (metrics) and cloud deployment details. Consider adding keywords like: Kubernetes, Redis, Unit Testing, System Design."
+  },
+  {
+    "_id": "9zt0wgr",
+    "createdAt": "2026-06-17T04:39:12.405Z",
+    "userId": "ed51ivc",
+    "fileName": "Haarish CV New final.pdf",
+    "atsScore": 80,
+    "missingKeywords": [
+      "Kubernetes",
+      "Redis",
+      "Unit Testing",
+      "System Design",
+      "GitHub Link"
+    ],
+    "projectEnhancements": [
+      {
+        "before": "Created a React website",
+        "after": "Engineered a high-performance React application utilizing dynamic state management, boosting UI responsiveness by 30%.",
+        "impact": "Improved user engagement and core web vitals."
+      },
+      {
+        "before": "Made Express backend APIs",
+        "after": "Designed and implemented robust Node.js/Express REST APIs with token authorization and index optimization, reducing server response times by 40%.",
+        "impact": "Decreased latency from 350ms to 210ms."
+      }
+    ],
+    "feedback": "The resume lists technical competencies, but lacks measurable outcomes (metrics) and cloud deployment details. Consider adding keywords like: Kubernetes, Redis, Unit Testing, System Design."
   }
 ]

@@ -11,6 +11,7 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
   const router = useRouter();
   const { user, token } = useStore();
   const [mounted, setMounted] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -19,18 +20,25 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
   useEffect(() => {
     if (mounted) {
       // Redirect logic: if no token, push to login
-      const publicPaths = ['/login', '/'];
+      const publicPaths = ['/login'];
+      let shouldRedirect = false;
+
       if (!token && !publicPaths.includes(pathname)) {
         router.push('/login');
+        shouldRedirect = true;
       } else if (token && user && !user.onboardingCompleted && pathname !== '/onboarding') {
         router.push('/onboarding');
-      } else if (token && user && user.onboardingCompleted && (pathname === '/login' || pathname === '/onboarding')) {
+        shouldRedirect = true;
+      } else if (token && user && user.onboardingCompleted && (pathname === '/login' || pathname === '/onboarding' || pathname === '/')) {
         router.push('/dashboard');
+        shouldRedirect = true;
       }
+
+      setIsRedirecting(shouldRedirect);
     }
   }, [token, user, pathname, mounted, router]);
 
-  if (!mounted) {
+  if (!mounted || isRedirecting) {
     return (
       <div className="flex h-screen w-screen items-center justify-center bg-[#0b0717]">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-violet-500 border-t-transparent"></div>
@@ -38,7 +46,7 @@ export default function ClientLayoutWrapper({ children }: { children: React.Reac
     );
   }
 
-  const isPublicPath = ['/login', '/'].includes(pathname) || !user;
+  const isPublicPath = ['/login'].includes(pathname) || !user;
   const isOnboarding = pathname === '/onboarding';
 
   return (

@@ -7,8 +7,7 @@ from typing import List, Optional
 
 # Import Services
 from services.resume_parser import analyze_resume_ats
-from services.rag_mentor import save_document, answer_query, search_documents, list_documents, delete_document, generate_rag_quiz, generate_rag_concepts
-from services.interview_analyzer import generate_mock_questions, evaluate_interview_performance, generate_adaptive_followup, analyze_whiteboard_code
+from services.rag_mentor import save_document, answer_query, search_documents, list_documents, delete_document, generate_rag_quiz, generate_rag_concepts, train_rag_index
 from services.readiness_engine import compute_readiness_and_roadmap
 
 app = FastAPI(title="DevPrep AI Backend")
@@ -43,45 +42,15 @@ class ConceptsRequest(BaseModel):
     userId: str
     activeFiles: List[str]
 
-class QuestionRequest(BaseModel):
-    interviewType: str
-    company: Optional[str] = "General"
-    targetRole: Optional[str] = "Backend Developer"
-    skills: Optional[List[str]] = []
-
-class AnswerItem(BaseModel):
-    question: str
-    answer: str
-
-class BehaviorAnalysisSchema(BaseModel):
-    eyeContactScore: int
-    confidenceScore: int
-    expressionBreakdown: dict
-
-class EvaluateRequest(BaseModel):
-    interviewType: str
-    company: Optional[str] = "General"
-    answers: List[AnswerItem]
-    behaviorAnalysis: Optional[BehaviorAnalysisSchema] = None
-
-class AdaptiveChatRequest(BaseModel):
-    interviewType: str
-    company: Optional[str] = "General"
-    targetRole: Optional[str] = "Backend Developer"
-    skills: Optional[List[str]] = []
-    chatHistory: List[dict] = []
-
-class WhiteboardReviewRequest(BaseModel):
-    problemTitle: str
-    problemDescription: str
-    codeLanguage: str
-    codeContent: str
+class TrainRagRequest(BaseModel):
+    userId: str
+    activeFiles: Optional[List[str]] = None
 
 class ReadinessRequest(BaseModel):
     profile: dict
     dsaProgress: List[dict]
     resumeReports: List[dict]
-    interviewHistory: List[dict]
+    profileStats: Optional[dict] = None
 
 @app.get("/health")
 def health_check():
@@ -89,21 +58,34 @@ def health_check():
 
 @app.post("/analyze-resume")
 async def analyze_resume(
-    file: UploadFile = File(...),
+    file: Optional[UploadFile] = File(None),
+    resume_text: Optional[str] = Form(None),
+    job_description: Optional[str] = Form(None),
     x_gemini_key: Optional[str] = Header(None)
 ):
+    if file is None and not (resume_text and resume_text.strip()):
+        raise HTTPException(status_code=400, detail="Please upload a resume file or paste resume text.")
+
     try:
-        # Save temp file
-        temp_file_path = os.path.join(TEMP_DIR, file.filename)
-        with open(temp_file_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-            
-        # Analyze
-        result = analyze_resume_ats(temp_file_path, api_key=x_gemini_key)
-        
-        # Clean up
-        os.remove(temp_file_path)
+        temp_file_path = None
+        if file is not None:
+            temp_file_path = os.path.join(TEMP_DIR, file.filename)
+            with open(temp_file_path, "wb") as buffer:
+                shutil.copyfileobj(file.file, buffer)
+
+        result = analyze_resume_ats(
+            pdf_path=temp_file_path,
+            resume_text=resume_text,
+            job_description=job_description,
+            api_key=x_gemini_key
+        )
+
+        if temp_file_path and os.path.exists(temp_file_path):
+            os.remove(temp_file_path)
+
         return result
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -169,40 +151,17 @@ def get_rag_concepts(request: ConceptsRequest, x_gemini_key: Optional[str] = Hea
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/mock-interview/questions")
-def get_questions(
-    request: QuestionRequest,
-    x_gemini_key: Optional[str] = Header(None)
-):
+@app.post("/rag/train")
+def train_rag(request: TrainRagRequest, x_gemini_key: Optional[str] = Header(None)):
     try:
-        questions = generate_mock_questions(
-            interview_type=request.interviewType,
-            company=request.company,
-            target_role=request.targetRole,
-            skills=request.skills,
-            api_key=x_gemini_key
-        )
-        return {"questions": questions}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/mock-interview/evaluate")
-def evaluate_answers(
-    request: EvaluateRequest,
-    x_gemini_key: Optional[str] = Header(None)
-):
-    try:
-        # Convert items to list of dicts
-        qa_list = [{"question": qa.question, "answer": qa.answer} for qa in request.answers]
-        behavior_data = request.behaviorAnalysis.dict() if request.behaviorAnalysis else None
-        result = evaluate_interview_performance(
-            questions_and_answers=qa_list,
-            interview_type=request.interviewType,
-            company=request.company,
-            behavior_data=behavior_data,
-            api_key=x_gemini_key
+        result = train_rag_index(
+            user_id=request.userId,
+            api_key=x_gemini_key,
+            active_files=request.activeFiles,
         )
         return result
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -216,45 +175,10 @@ def get_readiness_score(
             profile=request.profile,
             dsa_progress=request.dsaProgress,
             resume_reports=request.resumeReports,
-            interview_history=request.interviewHistory,
+            profile_stats=request.profileStats,
             api_key=x_gemini_key
         )
         return result
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/mock-interview/adaptive-chat")
-def get_adaptive_chat_question(
-    request: AdaptiveChatRequest,
-    x_gemini_key: Optional[str] = Header(None)
-):
-    try:
-        next_question = generate_adaptive_followup(
-            interview_type=request.interviewType,
-            company=request.company,
-            target_role=request.targetRole,
-            skills=request.skills,
-            chat_history=request.chatHistory,
-            api_key=x_gemini_key
-        )
-        return {"question": next_question}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/mock-interview/whiteboard-review")
-def review_whiteboard_code(
-    request: WhiteboardReviewRequest,
-    x_gemini_key: Optional[str] = Header(None)
-):
-    try:
-        review_result = analyze_whiteboard_code(
-            problem_title=request.problemTitle,
-            problem_description=request.problemDescription,
-            code_language=request.codeLanguage,
-            code_content=request.codeContent,
-            api_key=x_gemini_key
-        )
-        return review_result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

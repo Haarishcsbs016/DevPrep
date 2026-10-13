@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from '../../store/useStore';
+import { buildGeminiKeyPool, isGeminiQuotaError } from '../../lib/geminiKeys';
 import { 
   Send, 
   Sparkles, 
@@ -30,38 +31,71 @@ interface ChatSession {
   createdAt: string;
 }
 
+const createChatId = (prefix: string) => `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+
+const createWelcomeSession = (): ChatSession => ({
+  id: 'welcome-session',
+  title: 'New Chat',
+  messages: [
+    {
+      id: 'welcome',
+      sender: 'assistant',
+      text: `Hello! I'm your DevPrep AI assistant. Ask me anything about Data Structures, coding algorithms, resume updates, system design patterns, or placement preparation. I'm here to help!`,
+      timestamp: new Date().toISOString()
+    }
+  ],
+  createdAt: new Date().toISOString()
+});
+
+const loadStoredSessions = (): ChatSession[] => {
+  if (typeof window === 'undefined') {
+    return [createWelcomeSession()];
+  }
+
+  try {
+    const stored = localStorage.getItem('devprep_chat_sessions');
+    if (!stored) {
+      return [createWelcomeSession()];
+    }
+
+    const parsed = JSON.parse(stored) as ChatSession[];
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      return [createWelcomeSession()];
+    }
+
+    return parsed;
+  } catch (error) {
+    console.error('Error loading chat sessions:', error);
+    return [createWelcomeSession()];
+  }
+};
+
 export default function AIChatPage() {
-  const { user, geminiKey } = useStore();
-  const [sessions, setSessions] = useState<ChatSession[]>([]);
+  const { geminiKey } = useStore();
+  const [sessions, setSessions] = useState<ChatSession[]>(loadStoredSessions);
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [selectedModel, setSelectedModel] = useState('gemini-2.5-flash');
   const [showModelDropdown, setShowModelDropdown] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
-  // Load chat sessions from localStorage on mount
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('devprep_chat_sessions');
-      if (stored) {
-        try {
-          const parsed = JSON.parse(stored);
-          setSessions(parsed);
-          if (parsed.length > 0) {
-            setActiveSessionId(parsed[0].id);
-          } else {
-            createNewSession();
-          }
-        } catch (e) {
-          console.error("Error loading chat sessions:", e);
-          createNewSession();
-        }
-      } else {
-        createNewSession();
-      }
+  const modelOptions = [
+    {
+      id: 'gemini-2.5-flash',
+      label: 'Gemini 2.5 Flash',
+      description: 'Balanced quality and speed for coding help, resume rewrites, and reasoning.'
+    },
+    {
+      id: 'gemini-2.5-pro',
+      label: 'Gemini 2.5 Pro',
+      description: 'Best for deeper explanations, architecture reviews, and longer responses.'
+    },
+    {
+      id: 'gemini-2.0-flash',
+      label: 'Gemini 2.0 Flash',
+      description: 'Faster fallback when you want short answers and quick iterations.'
     }
-  }, []);
+  ];
 
   // Save chat sessions to localStorage whenever they change
   useEffect(() => {
@@ -79,7 +113,7 @@ export default function AIChatPage() {
 
   const createNewSession = () => {
     const newSession: ChatSession = {
-      id: Math.random().toString(36).substring(2, 9),
+      id: createChatId('session'),
       title: 'New Chat',
       messages: [
         {
@@ -107,7 +141,7 @@ export default function AIChatPage() {
       } else {
         // If no sessions left, create a fresh one
         const freshSession: ChatSession = {
-          id: Math.random().toString(36).substring(2, 9),
+          id: createChatId('session'),
           title: 'New Chat',
           messages: [
             {
@@ -125,21 +159,22 @@ export default function AIChatPage() {
     }
   };
 
-  const activeSession = sessions.find(s => s.id === activeSessionId);
+  const activeSession = sessions.find(s => s.id === activeSessionId) ?? sessions[0] ?? null;
+  const currentActiveId = activeSessionId ?? activeSession?.id ?? null;
 
   const handleSend = async (textToSend: string) => {
-    if (!textToSend.trim() || !activeSessionId || loading) return;
+    if (!textToSend.trim() || !currentActiveId || loading) return;
 
     const userMsg: ChatMessage = {
-      id: Math.random().toString(36).substring(7),
+      id: createChatId('msg-user'),
       sender: 'user',
       text: textToSend,
       timestamp: new Date().toISOString()
     };
 
     // Update active session with user message
-    let updatedSessions = sessions.map(s => {
-      if (s.id === activeSessionId) {
+    const updatedSessions = sessions.map(s => {
+      if (s.id === currentActiveId) {
         const isFirstUserMessage = s.messages.filter(m => m.sender === 'user').length === 0;
         const newTitle = isFirstUserMessage ? (textToSend.length > 28 ? textToSend.substring(0, 25) + '...' : textToSend) : s.title;
         return {
@@ -160,7 +195,7 @@ export default function AIChatPage() {
       You help computer science students prepare for placements. You assist with coding challenges, algorithm design, system design principles, resume review, computer science theory (OS, DBMS, CN), and soft skills.
       Keep answers clear, well-structured, professional, and instructional. Use markdown formatting and wrap code blocks in standard triple backticks (e.g. \`\`\`javascript ... \`\`\`).`;
 
-      const sessionToUse = updatedSessions.find(s => s.id === activeSessionId);
+      const sessionToUse = updatedSessions.find(s => s.id === currentActiveId);
       const messagesToFormat = sessionToUse ? sessionToUse.messages : [];
       
       // Build history for Gemini
@@ -181,33 +216,53 @@ export default function AIChatPage() {
         }
       ];
 
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${geminiKey}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ contents })
-        }
-      );
-
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error?.message || 'Error communicating with Gemini');
+      const keyPool = buildGeminiKeyPool(geminiKey);
+      if (keyPool.length === 0) {
+        throw new Error('No Gemini API keys are configured. Add at least one key in Settings.');
       }
 
-      const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "I apologize, but I couldn't formulate a response.";
+      let replyText = '';
+      let lastError: string | null = null;
+
+      for (const key of keyPool) {
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${key}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ contents })
+          }
+        );
+
+        const data = await response.json();
+        if (response.ok) {
+          replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "I apologize, but I couldn't formulate a response.";
+          lastError = null;
+          break;
+        }
+
+        const errorMessage = data.error?.message || 'Error communicating with Gemini';
+        lastError = errorMessage;
+        if (!isGeminiQuotaError(errorMessage)) {
+          continue;
+        }
+      }
+
+      if (!replyText) {
+        throw new Error(lastError || 'Error communicating with Gemini');
+      }
 
       const assistantMsg: ChatMessage = {
-        id: Math.random().toString(36).substring(7),
+        id: createChatId('msg-assistant'),
         sender: 'assistant',
         text: replyText,
         timestamp: new Date().toISOString()
       };
 
       setSessions(prev => prev.map(s => {
-        if (s.id === activeSessionId) {
+        if (s.id === currentActiveId) {
           return {
             ...s,
             messages: [...s.messages, assistantMsg]
@@ -216,20 +271,21 @@ export default function AIChatPage() {
         return s;
       }));
 
-    } catch (e: any) {
-      console.warn("Gemini chat API error:", e);
-      let errMsg = e.message || 'Please check your internet or API credentials.';
+    } catch (error: unknown) {
+      console.warn('Gemini chat API error:', error);
+      const baseMessage = error instanceof Error ? error.message : 'Please check your internet or API credentials.';
+      let errMsg = baseMessage;
       if (errMsg.toLowerCase().includes('quota') || errMsg.toLowerCase().includes('rate limit') || errMsg.toLowerCase().includes('limit exceeded')) {
-        errMsg = "⚠️ **Gemini Free Tier Quota Exceeded**. You have hit the rate limit for model requests. Please wait a moment (30–60 seconds) before sending another message, or try switching models.";
+        errMsg = "⚠️ **Gemini Free Tier Quota Exceeded**. The app tried the next configured API key automatically, but all available keys are currently rate-limited. Please wait a moment (30–60 seconds) before sending another message, or try switching models.";
       }
       const errorMsg: ChatMessage = {
-        id: Math.random().toString(36).substring(7),
+        id: createChatId('msg-assistant'),
         sender: 'assistant',
         text: errMsg,
         timestamp: new Date().toISOString()
       };
       setSessions(prev => prev.map(s => {
-        if (s.id === activeSessionId) {
+        if (s.id === currentActiveId) {
           return {
             ...s,
             messages: [...s.messages, errorMsg]
@@ -283,14 +339,17 @@ export default function AIChatPage() {
   ];
 
   return (
-    <div className="flex h-[84vh] rounded-2xl overflow-hidden glass-panel border-violet-950/40 relative">
+    <div className="flex h-[84vh] rounded-2xl overflow-hidden glass-panel border-violet-950/40 relative bg-[#06030e]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(168,85,247,0.14),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(236,72,153,0.10),transparent_30%)] pointer-events-none" />
       
       {/* ChatGPT Left Sidebar: Chat Sessions History */}
-      <div className="w-64 border-r border-violet-950/40 bg-[#120a2e]/30 flex flex-col justify-between p-4 shrink-0 hidden md:flex">
-        <div className="space-y-4 flex-1 flex flex-col min-h-0">
+      <div className="hidden md:block shrink-0">
+        <div className="w-64 border-r border-violet-950/40 bg-[#120a2e]/30 flex flex-col justify-between p-4 h-full">
+          <div className="space-y-4 flex-1 flex flex-col min-h-0">
           {/* New Chat Button */}
-          <button
+            <button
             onClick={createNewSession}
+              title="Start a new chat"
             className="w-full flex items-center space-x-2 px-3 py-2.5 rounded-xl border border-violet-800/40 hover:border-violet-650 bg-violet-950/20 text-white text-xs font-semibold hover:bg-violet-950/40 transition-all duration-200 cursor-pointer shadow-lg shadow-violet-950/40"
           >
             <Plus className="h-4 w-4" />
@@ -307,7 +366,7 @@ export default function AIChatPage() {
                   onClick={() => setActiveSessionId(s.id)}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-sm transition duration-150 group cursor-pointer ${
                     isActive 
-                      ? 'bg-gradient-to-r from-violet-600/35 to-pink-600/15 text-white border-l-3 border-violet-500 font-semibold'
+                      ? 'bg-linear-to-r from-violet-600/35 to-pink-600/15 text-white border-l-3 border-violet-500 font-semibold'
                       : 'text-violet-300/80 hover:text-white hover:bg-violet-950/20'
                   }`}
                 >
@@ -318,6 +377,8 @@ export default function AIChatPage() {
                   {sessions.length > 1 && (
                     <button
                       onClick={(e) => deleteSession(s.id, e)}
+                      title="Delete chat"
+                      aria-label="Delete chat"
                       className="opacity-0 group-hover:opacity-100 p-1 hover:text-rose-400 hover:bg-rose-950/30 rounded transition shrink-0 cursor-pointer"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
@@ -329,9 +390,10 @@ export default function AIChatPage() {
           </div>
         </div>
 
-        {/* Footer info */}
-        <div className="pt-3 border-t border-violet-950/30 text-[9px] text-violet-400 leading-relaxed uppercase font-mono tracking-wider">
-          🔒 History stored locally
+          {/* Footer info */}
+          <div className="pt-3 border-t border-violet-950/30 text-[9px] text-violet-400 leading-relaxed uppercase font-mono tracking-wider">
+            🔒 History stored locally
+          </div>
         </div>
       </div>
 
@@ -343,35 +405,33 @@ export default function AIChatPage() {
           <div className="relative">
             <button
               onClick={() => setShowModelDropdown(!showModelDropdown)}
+              title="Choose model"
+              aria-label="Choose model"
               className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-violet-950/40 border border-violet-850 hover:border-violet-650 text-white text-xs font-semibold transition"
             >
               <Sparkles className="h-3.5 w-3.5 text-pink-400" />
-              <span>{selectedModel === 'gemini-2.5-flash' ? 'Gemini 2.5 Flash (Default)' : 'Gemini 2.0 Flash (Ultra-fast)'}</span>
+              <span>{modelOptions.find((m) => m.id === selectedModel)?.label || 'Gemini 2.5 Flash'}</span>
               <ChevronDown className="h-3.5 w-3.5 text-violet-400" />
             </button>
             
             {showModelDropdown && (
               <div className="absolute top-10 left-0 w-64 bg-[#120a2e] border border-violet-800/60 rounded-xl shadow-2xl z-20 overflow-hidden">
-                <button
-                  onClick={() => {
-                    setSelectedModel('gemini-2.5-flash');
-                    setShowModelDropdown(false);
-                  }}
-                  className="w-full p-3 text-left text-xs text-white hover:bg-violet-950/60 transition flex flex-col"
-                >
-                  <span className="font-bold flex items-center space-x-1"><Sparkles className="h-3 w-3 text-pink-400" /><span>Gemini 2.5 Flash</span></span>
-                  <span className="text-[10px] text-violet-400 mt-0.5">Fast, balanced model for standard coding and writing tasks.</span>
-                </button>
-                <button
-                  onClick={() => {
-                    setSelectedModel('gemini-2.0-flash');
-                    setShowModelDropdown(false);
-                  }}
-                  className="w-full p-3 text-left text-xs text-white hover:bg-violet-950/60 border-t border-violet-950/40 transition flex flex-col"
-                >
-                  <span className="font-bold flex items-center space-x-1"><Code className="h-3 w-3 text-violet-400" /><span>Gemini 2.0 Flash</span></span>
-                  <span className="text-[10px] text-violet-400 mt-0.5">Ultra-fast response times for rapid question generation and review.</span>
-                </button>
+                {modelOptions.map((model, index) => (
+                  <button
+                    key={model.id}
+                    onClick={() => {
+                      setSelectedModel(model.id);
+                      setShowModelDropdown(false);
+                    }}
+                    className={`w-full p-3 text-left text-xs text-white hover:bg-violet-950/60 transition flex flex-col ${index > 0 ? 'border-t border-violet-950/40' : ''}`}
+                  >
+                    <span className="font-bold flex items-center space-x-1">
+                      {model.id === 'gemini-2.0-flash' ? <Code className="h-3 w-3 text-violet-400" /> : <Sparkles className="h-3 w-3 text-pink-400" />}
+                      <span>{model.label}</span>
+                    </span>
+                    <span className="text-[10px] text-violet-400 mt-0.5">{model.description}</span>
+                  </button>
+                ))}
               </div>
             )}
           </div>
@@ -388,7 +448,7 @@ export default function AIChatPage() {
             /* ChatGPT Landing view if no messages sent */
             <div className="h-full flex flex-col items-center justify-center text-center max-w-2xl mx-auto space-y-8 animate-in fade-in zoom-in-95 duration-500">
               <div className="flex flex-col items-center">
-                <div className="bg-gradient-to-tr from-violet-600 to-pink-500 p-4 rounded-2xl shadow-xl shadow-violet-500/20 mb-4 animate-pulse">
+                <div className="bg-linear-to-tr from-violet-600 to-pink-500 p-4 rounded-2xl shadow-xl shadow-violet-500/20 mb-4 animate-pulse">
                   <Sparkles className="h-10 w-10 text-white" />
                 </div>
                 <h3 className="text-2xl font-black text-white tracking-wide">
@@ -428,7 +488,7 @@ export default function AIChatPage() {
                       {/* Avatar */}
                       <div className={`p-2 rounded-xl shrink-0 shadow-lg mt-1 ${
                         isAssistant 
-                          ? 'bg-gradient-to-tr from-violet-600 to-pink-500 shadow-violet-900/20' 
+                          ? 'bg-linear-to-tr from-violet-600 to-pink-500 shadow-violet-900/20' 
                           : 'bg-violet-950/60 border border-violet-800 shadow-violet-950/50'
                       }`}>
                         {isAssistant ? (
@@ -465,7 +525,7 @@ export default function AIChatPage() {
           {loading && (
             <div className="flex justify-start w-full max-w-3xl mx-auto">
               <div className="flex items-start space-x-3 max-w-[85%]">
-                <div className="bg-gradient-to-tr from-violet-600 to-pink-500 p-2 rounded-xl shrink-0 shadow-lg shadow-violet-900/20">
+                <div className="bg-linear-to-tr from-violet-600 to-pink-500 p-2 rounded-xl shrink-0 shadow-lg shadow-violet-900/20">
                   <Bot className="h-5 w-5 text-white" />
                 </div>
                 <div className="p-4.5 bg-[#120a2e]/40 border border-violet-950/70 text-violet-400 text-sm flex items-center space-x-2 rounded-2xl rounded-tl-none">
@@ -499,7 +559,9 @@ export default function AIChatPage() {
             <button
               type="submit"
               disabled={!input.trim() || loading}
-              className="p-4 rounded-xl bg-gradient-to-r from-violet-600 to-pink-500 text-white hover:brightness-110 disabled:opacity-40 transition shadow-lg flex items-center justify-center shrink-0 cursor-pointer"
+              title="Send message"
+              aria-label="Send message"
+              className="p-4 rounded-xl bg-linear-to-r from-violet-600 to-pink-500 text-white hover:brightness-110 disabled:opacity-40 transition shadow-lg flex items-center justify-center shrink-0 cursor-pointer"
             >
               <Send className="h-4.5 w-4.5" />
             </button>

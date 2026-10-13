@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useStore } from '../store/useStore';
 import { 
   Cpu, 
-  Mic, 
+  MessageSquare, 
   Code2, 
   FileText, 
   CheckCircle2, 
@@ -35,9 +35,9 @@ export default function LandingPage() {
       glow: "rgba(139, 92, 246, 0.4)"
     },
     {
-      title: "AI Voice Mock Interviews",
-      description: "Experience technical, coding, or HR interviews. Features real-time browser text-to-speech feedback & filler word tracking.",
-      icon: Mic,
+      title: "AI Chat Assistant",
+      description: "Multi-session AI chat powered by Gemini. Supports code reviews, concept explanations, resume rewrites, and career advice with markdown rendering.",
+      icon: MessageSquare,
       color: "from-pink-500 to-rose-500",
       glow: "rgba(236, 72, 153, 0.4)"
     },
@@ -100,7 +100,7 @@ export default function LandingPage() {
         </h2>
 
         <p className="text-base sm:text-lg text-violet-300/80 max-w-2xl mb-10 leading-relaxed">
-          DevPrep AI consolidates DSA progress, resume parsing, voice mock interviews, notes RAG mentoring, and Github metrics into a unified, actionable placement readiness score.
+          DevPrep AI consolidates DSA progress, resume ATS parsing, an AI study mentor, intelligent chat, and GitHub metrics into a unified, actionable placement readiness score.
         </p>
 
         <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mb-20">

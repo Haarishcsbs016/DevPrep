@@ -22,6 +22,51 @@
     },
     "githubUsername": "haarishcsbs016",
     "leetcodeUsername": "haarishcsbs016",
+    "hackerrankUsername": "haarishcsbs016",
+    "hackerearthUsername": "Haarish Guru",
+    "profileStats": {
+      "leetcode": {
+        "solved": 246,
+        "easySolved": 172,
+        "mediumSolved": 69,
+        "hardSolved": 5,
+        "rating": 1435,
+        "ranking": 607424,
+        "maxRating": 1625,
+        "attendedContests": 18,
+        "activeDays": 129,
+        "maxStreak": 32,
+        "submissions": 250
+      },
+      "hackerrank": {
+        "stars": {
+          "java": 5,
+          "sql": 4,
+          "cpp": 4,
+          "python": 4,
+          "algorithms": 5
+        },
+        "badges": [
+          "Java 5 Star",
+          "SQL 4 Star",
+          "Problem Solving 5 Star"
+        ]
+      },
+      "hackerearth": {
+        "solved": 120,
+        "rating": 1580
+      },
+      "github": {
+        "commits": 142,
+        "repos": 18,
+        "stars": 12
+      },
+      "mockInterview": {
+        "score": 75,
+        "count": 2
+      },
+      "lastSynced": "2026-06-17T04:37:50.426Z"
+    },
     "createdAt": "2026-05-24T12:12:59.486Z",
     "name": "hi",
     "email": "haarishguru28@gmail.com",
@@ -38,14 +83,16 @@
       "Week 2||Solve 10 classic 1D and 2D Dynamic Programming problems (Knapsack, Longest Common Subsequence, Coin Change)",
       "Week 2||Deep dive into OS Deadlocks (Detection, Prevention) and Virtual Memory concepts",
       "Week 2||Build and host a minor optimization on your existing React-Node stack (e.g., JWT Authentication or Redis caching) to showcase on the resume",
-      "Week 2||Conduct a peer-to-peer mock interview focused purely on JavaScript, Node.js, and MongoDB system-level questions",
+      "Week 2||Review core JavaScript design patterns, asynchronous execution loop, and MongoDB indexing strategies",
       "Week 3||Solve 12 Medium problems on LinkedLists, Trees, and Graphs (heavily tested at Amazon)",
       "Week 3||Review TCS NQT specific quantitative aptitude, logical reasoning, and verbal topics",
       "Week 3||Study High-Level System Design concepts: Load Balancers, Sharding, and MVC Architecture",
       "Week 3||Prepare STAR-method behavioral stories aligning with Amazon's Leadership Principles (Ownership, Bias for Action)",
       "Week 4||Attempt 3 timed online coding assessments simulating Amazon's OA environment",
-      "Week 4||Complete 2 Full-Stack mock interviews covering system integration, coding, and CS fundamentals",
-      "Week 4||Revise cheat sheets for Dynamic Programming state transitions and Operating Systems commands"
+      "Week 4||Solve 2 Full-Stack comprehensive system architecture and database optimization challenges",
+      "Week 4||Revise cheat sheets for Dynamic Programming state transitions and Operating Systems commands",
+      "Week 1||Review Database Management ACID properties and normalization",
+      "Week 1||Write SQL queries involving complex JOIN operations"
     ]
   },
   {
@@ -75,5 +122,34 @@
     "name": "doe",
     "email": "haarishguru@gmail.com",
     "password": "$2a$10$qOtwCWoF352Z4nAO3RTg/Ocuyb9Ef3rS7sbiBqNIyNRo.ZFSl/xDK"
+  },
+  {
+    "_id": "hlv8g0z",
+    "onboardingCompleted": true,
+    "profile": {
+      "targetRole": "Full Stack Developer",
+      "knownSkills": [
+        "React",
+        "Node.js",
+        "JavaScript",
+        "MongoDB"
+      ],
+      "weakAreas": [
+        "Operating Systems",
+        "Dynamic Programming"
+      ],
+      "targetCompanies": [
+        "Amazon",
+        "TCS"
+      ],
+      "dsaConfidence": "Intermediate"
+    },
+    "completedRoadmapTasks": [],
+    "githubUsername": "",
+    "leetcodeUsername": "",
+    "createdAt": "2026-06-01T13:49:44.431Z",
+    "name": "hiiii",
+    "email": "haarishguru8@gmail.com",
+    "password": "$2a$10$iE8LU3S15zVYsM9EzZZDreLZpxIy6b/2rZhCsTzcBZovCZhoUm56W"
   }
 ]

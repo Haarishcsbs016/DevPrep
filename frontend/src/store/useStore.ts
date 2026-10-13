@@ -16,6 +16,9 @@ interface User {
   profile: UserProfile;
   githubUsername?: string;
   leetcodeUsername?: string;
+  hackerrankUsername?: string;
+  hackerearthUsername?: string;
+  profileStats?: any;
   completedRoadmapTasks?: string[];
 }
 
@@ -35,38 +38,7 @@ interface DSAProgress {
   lastActive: string;
 }
 
-interface QuestionAnalysis {
-  fillerWords: string[];
-  fillerCount: number;
-  fluencyScore: number;
-  speakingSpeed: string;
-}
 
-interface InterviewQuestion {
-  questionText: string;
-  answerText: string;
-  score: number;
-  feedback: string;
-  analysis: QuestionAnalysis;
-}
-
-interface InterviewOverallFeedback {
-  communicationScore: number;
-  technicalScore: number;
-  confidenceScore: number;
-  summary: string;
-  weakAreas: string[];
-}
-
-interface InterviewSession {
-  _id: string;
-  type: 'HR' | 'Technical' | 'Coding';
-  company: string;
-  status: string;
-  questions: InterviewQuestion[];
-  overallFeedback: InterviewOverallFeedback;
-  createdAt: string;
-}
 
 interface ResumeProjectEnhancement {
   before: string;
@@ -88,15 +60,12 @@ interface AppState {
   token: string | null;
   user: User | null;
   dsaProgress: DSAProgress[];
-  interviews: InterviewSession[];
   resumes: ResumeAnalysis[];
   geminiKey: string | null;
   
   setToken: (token: string | null) => void;
   setUser: (user: User | null) => void;
   setDSAProgress: (progress: DSAProgress[]) => void;
-  setInterviews: (interviews: InterviewSession[]) => void;
-  addInterview: (session: InterviewSession) => void;
   setResumes: (resumes: ResumeAnalysis[]) => void;
   addResume: (report: ResumeAnalysis) => void;
   setGeminiKey: (key: string | null) => void;
@@ -104,6 +73,14 @@ interface AppState {
 }
 
 export const useStore = create<AppState>((set) => {
+  const defaultGeminiKeys = [
+    process.env.NEXT_PUBLIC_GEMINI_API_KEY_1,
+    process.env.NEXT_PUBLIC_GEMINI_API_KEY_2,
+    process.env.NEXT_PUBLIC_GEMINI_API_KEY_3,
+    process.env.NEXT_PUBLIC_GEMINI_API_KEY,
+    'AIzaSyBYJixNvk2kCx0_Nz_ksP1P96OOegsk0ds'
+  ].filter(Boolean).join(',');
+
   // Safe localStorage helper for Next.js SSR
   const getLocal = (key: string) => {
     if (typeof window !== 'undefined') {
@@ -123,9 +100,8 @@ export const useStore = create<AppState>((set) => {
     token: getLocal('devprep_token'),
     user: getLocal('devprep_user') ? JSON.parse(getLocal('devprep_user')!) : null,
     dsaProgress: [],
-    interviews: [],
     resumes: [],
-    geminiKey: getLocal('devprep_gemini_key') || 'AIzaSyBYJixNvk2kCx0_Nz_ksP1P96OOegsk0ds',
+    geminiKey: getLocal('devprep_gemini_key') || defaultGeminiKeys,
 
     setToken: (token) => {
       setLocal('devprep_token', token);
@@ -136,8 +112,6 @@ export const useStore = create<AppState>((set) => {
       set({ user });
     },
     setDSAProgress: (dsaProgress) => set({ dsaProgress }),
-    setInterviews: (interviews) => set({ interviews }),
-    addInterview: (session) => set((state) => ({ interviews: [session, ...state.interviews] })),
     setResumes: (resumes) => set({ resumes }),
     addResume: (report) => set((state) => ({ resumes: [report, ...state.resumes] })),
     setGeminiKey: (geminiKey) => {
@@ -147,8 +121,8 @@ export const useStore = create<AppState>((set) => {
     logout: () => {
       setLocal('devprep_token', null);
       setLocal('devprep_user', null);
-      set({ token: null, user: null, dsaProgress: [], interviews: [], resumes: [] });
+      set({ token: null, user: null, dsaProgress: [], resumes: [] });
     }
   };
 });
-export type { User, UserProfile, DSAProgress, SolvedProblem, InterviewSession, InterviewQuestion, ResumeAnalysis, ResumeProjectEnhancement };
+export type { User, UserProfile, DSAProgress, SolvedProblem, ResumeAnalysis, ResumeProjectEnhancement };

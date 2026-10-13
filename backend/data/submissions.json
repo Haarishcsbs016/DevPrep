@@ -1,0 +1,506 @@
+[
+  {
+    "_id": "1rkfmse",
+    "createdAt": "2026-10-12T14:33:24.287Z",
+    "userId": "ed51ivc",
+    "problemId": "two-sum-problem",
+    "problemTitle": "Two Sum",
+    "topicSlug": "Arrays",
+    "difficulty": "Easy",
+    "language": "javascript",
+    "code": "function twoSum(nums, target) { return [0, 0]; }",
+    "status": "Failed",
+    "runtimeMs": 0.03,
+    "passedTests": 0,
+    "totalTests": 5,
+    "testResults": [
+      {
+        "caseNumber": 1,
+        "args": [
+          [
+            2,
+            7,
+            11,
+            15
+          ],
+          9
+        ],
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          0
+        ],
+        "passed": false,
+        "durationMs": 0.03
+      },
+      {
+        "caseNumber": 2,
+        "args": [
+          [
+            3,
+            2,
+            4
+          ],
+          6
+        ],
+        "expected": [
+          1,
+          2
+        ],
+        "actual": [
+          0,
+          0
+        ],
+        "passed": false,
+        "durationMs": 0
+      },
+      {
+        "caseNumber": 3,
+        "args": [
+          [
+            3,
+            3
+          ],
+          6
+        ],
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          0
+        ],
+        "passed": false,
+        "durationMs": 0
+      },
+      {
+        "caseNumber": 4,
+        "args": [
+          [
+            -1,
+            -2,
+            -3,
+            -4,
+            -5
+          ],
+          -8
+        ],
+        "expected": [
+          2,
+          4
+        ],
+        "actual": [
+          0,
+          0
+        ],
+        "passed": false,
+        "durationMs": 0
+      },
+      {
+        "caseNumber": 5,
+        "args": [
+          [
+            10,
+            20,
+            30,
+            40
+          ],
+          50
+        ],
+        "expected": [
+          0,
+          3
+        ],
+        "actual": [
+          0,
+          0
+        ],
+        "passed": false,
+        "durationMs": 0
+      }
+    ],
+    "feedback": "Passed 0 of 5 test cases."
+  },
+  {
+    "_id": "h5wqrjv",
+    "createdAt": "2026-10-12T14:33:24.298Z",
+    "userId": "ed51ivc",
+    "problemId": "two-sum-problem",
+    "problemTitle": "Two Sum",
+    "topicSlug": "Arrays",
+    "difficulty": "Easy",
+    "language": "javascript",
+    "code": "\n          function twoSum(nums, target) {\n            const map = new Map();\n            for (let i = 0; i < nums.length; i++) {\n              const comp = target - nums[i];\n              if (map.has(comp)) return [map.get(comp), i];\n              map.set(nums[i], i);\n            }\n            return [];\n          }\n        ",
+    "status": "Failed",
+    "runtimeMs": 0.06,
+    "passedTests": 4,
+    "totalTests": 5,
+    "testResults": [
+      {
+        "caseNumber": 1,
+        "args": [
+          [
+            2,
+            7,
+            11,
+            15
+          ],
+          9
+        ],
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          1
+        ],
+        "passed": true,
+        "durationMs": 0.02
+      },
+      {
+        "caseNumber": 2,
+        "args": [
+          [
+            3,
+            2,
+            4
+          ],
+          6
+        ],
+        "expected": [
+          1,
+          2
+        ],
+        "actual": [
+          1,
+          2
+        ],
+        "passed": true,
+        "durationMs": 0
+      },
+      {
+        "caseNumber": 3,
+        "args": [
+          [
+            3,
+            3
+          ],
+          6
+        ],
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          1
+        ],
+        "passed": true,
+        "durationMs": 0
+      },
+      {
+        "caseNumber": 4,
+        "args": [
+          [
+            -1,
+            -2,
+            -3,
+            -4,
+            -5
+          ],
+          -8
+        ],
+        "expected": [
+          2,
+          4
+        ],
+        "actual": [
+          2,
+          4
+        ],
+        "passed": true,
+        "durationMs": 0
+      },
+      {
+        "caseNumber": 5,
+        "args": [
+          [
+            10,
+            20,
+            30,
+            40
+          ],
+          50
+        ],
+        "expected": [
+          0,
+          3
+        ],
+        "actual": [
+          1,
+          2
+        ],
+        "passed": false,
+        "durationMs": 0.04
+      }
+    ],
+    "feedback": "Passed 4 of 5 test cases."
+  },
+  {
+    "_id": "z4qgrpy",
+    "createdAt": "2026-10-12T14:34:09.656Z",
+    "userId": "ed51ivc",
+    "problemId": "two-sum-problem",
+    "problemTitle": "Two Sum",
+    "topicSlug": "Arrays",
+    "difficulty": "Easy",
+    "language": "javascript",
+    "code": "function twoSum(nums, target) { return [0, 0]; }",
+    "status": "Failed",
+    "runtimeMs": 0.03,
+    "passedTests": 0,
+    "totalTests": 5,
+    "testResults": [
+      {
+        "caseNumber": 1,
+        "args": [
+          [
+            2,
+            7,
+            11,
+            15
+          ],
+          9
+        ],
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          0
+        ],
+        "passed": false,
+        "durationMs": 0.03
+      },
+      {
+        "caseNumber": 2,
+        "args": [
+          [
+            3,
+            2,
+            4
+          ],
+          6
+        ],
+        "expected": [
+          1,
+          2
+        ],
+        "actual": [
+          0,
+          0
+        ],
+        "passed": false,
+        "durationMs": 0
+      },
+      {
+        "caseNumber": 3,
+        "args": [
+          [
+            3,
+            3
+          ],
+          6
+        ],
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          0
+        ],
+        "passed": false,
+        "durationMs": 0
+      },
+      {
+        "caseNumber": 4,
+        "args": [
+          [
+            -1,
+            -2,
+            -3,
+            -4,
+            -5
+          ],
+          -8
+        ],
+        "expected": [
+          2,
+          4
+        ],
+        "actual": [
+          0,
+          0
+        ],
+        "passed": false,
+        "durationMs": 0
+      },
+      {
+        "caseNumber": 5,
+        "args": [
+          [
+            10,
+            25,
+            30,
+            40
+          ],
+          50
+        ],
+        "expected": [
+          0,
+          3
+        ],
+        "actual": [
+          0,
+          0
+        ],
+        "passed": false,
+        "durationMs": 0
+      }
+    ],
+    "feedback": "Passed 0 of 5 test cases."
+  },
+  {
+    "_id": "px6c0ub",
+    "createdAt": "2026-10-12T14:34:09.666Z",
+    "userId": "ed51ivc",
+    "problemId": "two-sum-problem",
+    "problemTitle": "Two Sum",
+    "topicSlug": "Arrays",
+    "difficulty": "Easy",
+    "language": "javascript",
+    "code": "\n          function twoSum(nums, target) {\n            const map = new Map();\n            for (let i = 0; i < nums.length; i++) {\n              const comp = target - nums[i];\n              if (map.has(comp)) return [map.get(comp), i];\n              map.set(nums[i], i);\n            }\n            return [];\n          }\n        ",
+    "status": "Accepted",
+    "runtimeMs": 0.03,
+    "passedTests": 5,
+    "totalTests": 5,
+    "testResults": [
+      {
+        "caseNumber": 1,
+        "args": [
+          [
+            2,
+            7,
+            11,
+            15
+          ],
+          9
+        ],
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          1
+        ],
+        "passed": true,
+        "durationMs": 0.01
+      },
+      {
+        "caseNumber": 2,
+        "args": [
+          [
+            3,
+            2,
+            4
+          ],
+          6
+        ],
+        "expected": [
+          1,
+          2
+        ],
+        "actual": [
+          1,
+          2
+        ],
+        "passed": true,
+        "durationMs": 0
+      },
+      {
+        "caseNumber": 3,
+        "args": [
+          [
+            3,
+            3
+          ],
+          6
+        ],
+        "expected": [
+          0,
+          1
+        ],
+        "actual": [
+          0,
+          1
+        ],
+        "passed": true,
+        "durationMs": 0
+      },
+      {
+        "caseNumber": 4,
+        "args": [
+          [
+            -1,
+            -2,
+            -3,
+            -4,
+            -5
+          ],
+          -8
+        ],
+        "expected": [
+          2,
+          4
+        ],
+        "actual": [
+          2,
+          4
+        ],
+        "passed": true,
+        "durationMs": 0
+      },
+      {
+        "caseNumber": 5,
+        "args": [
+          [
+            10,
+            25,
+            30,
+            40
+          ],
+          50
+        ],
+        "expected": [
+          0,
+          3
+        ],
+        "actual": [
+          0,
+          3
+        ],
+        "passed": true,
+        "durationMs": 0.02
+      }
+    ],
+    "feedback": "All test cases passed successfully! Excellent algorithmic efficiency."
+  }
+]

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useStore } from '../../store/useStore';
+import { buildGeminiKeyPool } from '../../lib/geminiKeys';
 import { 
   Cpu, 
   Send, 
@@ -19,7 +20,10 @@ import {
   Info, 
   Check, 
   X, 
-  RefreshCw 
+  RefreshCw,
+  ChevronLeft,
+  Shuffle,
+  RotateCw 
 } from 'lucide-react';
 
 interface ChatMessage {
@@ -43,6 +47,7 @@ export default function RAGMentor() {
   // File states
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [training, setTraining] = useState(false);
   const [uploadMessage, setUploadMessage] = useState('');
   const [error, setError] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
@@ -63,6 +68,11 @@ export default function RAGMentor() {
   // Key Concepts states
   const [concepts, setConcepts] = useState<any[]>([]);
   const [extractingConcepts, setExtractingConcepts] = useState(false);
+  const [conceptViewMode, setConceptViewMode] = useState<'grid' | 'flashcards'>('grid');
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  const [isCardFlipped, setIsCardFlipped] = useState(false);
+  const [isShuffled, setIsShuffled] = useState(false);
+  const [shuffledConcepts, setShuffledConcepts] = useState<any[]>([]);
 
   // Citation details drawer
   const [activeChunks, setActiveChunks] = useState<{ file_name: string; text: string; }[] | null>(null);
@@ -73,6 +83,39 @@ export default function RAGMentor() {
       fetchFiles();
     }
   }, [user?.id]);
+
+  // Keyboard Navigation for 3D Flashcards
+  useEffect(() => {
+    if (activeTab !== 'concepts' || concepts.length === 0 || conceptViewMode !== 'flashcards') return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Avoid triggering shortcuts if typing inside an input or textarea
+      if (document.activeElement?.tagName === 'INPUT' || document.activeElement?.tagName === 'TEXTAREA') {
+        return;
+      }
+
+      const activeList = isShuffled ? shuffledConcepts : concepts;
+      if (activeList.length === 0) return;
+
+      if (e.key === ' ' || e.key === 'Spacebar') {
+        e.preventDefault();
+        setIsCardFlipped(prev => !prev);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        setIsCardFlipped(false);
+        setCurrentCardIndex(prev => (prev === 0 ? activeList.length - 1 : prev - 1));
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        setIsCardFlipped(false);
+        setCurrentCardIndex(prev => (prev === activeList.length - 1 ? 0 : prev + 1));
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeTab, conceptViewMode, concepts, shuffledConcepts, isShuffled]);
 
   const fetchFiles = async () => {
     try {
@@ -113,8 +156,9 @@ export default function RAGMentor() {
     formData.append('userId', user.id);
 
     const headers: Record<string, string> = {};
-    if (geminiKey) {
-      headers['X-Gemini-Key'] = geminiKey;
+    const geminiHeader = buildGeminiKeyPool(geminiKey).join(',');
+    if (geminiHeader) {
+      headers['X-Gemini-Key'] = geminiHeader;
     }
 
     try {
@@ -174,6 +218,10 @@ export default function RAGMentor() {
         // Reset quiz and concepts if related to deleted file
         setQuizQuestions([]);
         setConcepts([]);
+        setShuffledConcepts([]);
+        setCurrentCardIndex(0);
+        setIsCardFlipped(false);
+        setIsShuffled(false);
       } else {
         const result = await response.json();
         setError(result.detail || 'Failed to delete file');
@@ -201,6 +249,45 @@ export default function RAGMentor() {
     setSelectedFiles([]);
   };
 
+  const handleTrainRag = async () => {
+    if (!user?.id) return;
+
+    setTraining(true);
+    setError('');
+    setUploadMessage('');
+
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    const geminiHeader = buildGeminiKeyPool(geminiKey).join(',');
+    if (geminiHeader) {
+      headers['X-Gemini-Key'] = geminiHeader;
+    }
+
+    try {
+      const response = await fetch('http://localhost:8000/rag/train', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          userId: user.id,
+          activeFiles: selectedFiles.length > 0 ? selectedFiles : null
+        })
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.detail || 'Failed to train RAG index');
+      }
+
+      setUploadMessage(
+        `RAG training finished. Updated ${result.updatedChunks}/${result.totalChunks} chunks` +
+        (result.failedChunks ? ` (${result.failedChunks} failed).` : '.')
+      );
+    } catch (err: any) {
+      setError(err.message || 'Error while training RAG index');
+    } finally {
+      setTraining(false);
+    }
+  };
+
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || !user) return;
@@ -217,8 +304,9 @@ export default function RAGMentor() {
     setError('');
 
     const aiHeaders: Record<string, string> = { 'Content-Type': 'application/json' };
-    if (geminiKey) {
-      aiHeaders['X-Gemini-Key'] = geminiKey;
+    const geminiHeader = buildGeminiKeyPool(geminiKey).join(',');
+    if (geminiHeader) {
+      aiHeaders['X-Gemini-Key'] = geminiHeader;
     }
 
     try {
@@ -356,7 +444,12 @@ export default function RAGMentor() {
       if (!response.ok) {
         throw new Error(result.detail || 'Failed to extract concepts');
       }
-      setConcepts(result.concepts || []);
+      const conceptList = result.concepts || [];
+      setConcepts(conceptList);
+      setShuffledConcepts(conceptList);
+      setCurrentCardIndex(0);
+      setIsCardFlipped(false);
+      setIsShuffled(false);
     } catch (err: any) {
       setError(err.message || 'Error extracting concepts');
     } finally {
@@ -435,6 +528,25 @@ export default function RAGMentor() {
                   <Loader2 className="h-4 w-4 animate-spin text-white" />
                 ) : (
                   <span>Index Subject Notes</span>
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={handleTrainRag}
+                disabled={training || uploadedFiles.length === 0}
+                className="w-full py-2 rounded-xl bg-violet-950 border border-violet-800 text-violet-200 font-semibold text-xs hover:bg-violet-900/40 disabled:opacity-40 transition flex items-center justify-center space-x-2 cursor-pointer"
+              >
+                {training ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin text-violet-300" />
+                    <span>Training RAG Index...</span>
+                  </>
+                ) : (
+                  <>
+                    <Cpu className="h-4 w-4 text-violet-300" />
+                    <span>Train RAG Model</span>
+                  </>
                 )}
               </button>
             </form>
@@ -847,10 +959,41 @@ export default function RAGMentor() {
                 ) : (
                   <div className="space-y-4">
                     <div className="flex justify-between items-center pb-2 border-b border-violet-950/40">
-                      <p className="text-xs font-mono font-bold text-violet-400">
-                        MINED CONCEPTS FROM SELECT MATERIAL ({concepts.length})
-                      </p>
+                      <div className="flex items-center space-x-4">
+                        <p className="text-xs font-mono font-bold text-violet-400">
+                          MINED CONCEPTS FROM SELECT MATERIAL ({concepts.length})
+                        </p>
+                        <div className="flex bg-[#0a051d] border border-violet-950 p-0.5 rounded-lg text-[10px]">
+                          <button
+                            type="button"
+                            onClick={() => setConceptViewMode('grid')}
+                            className={`px-2.5 py-1 rounded-md font-bold uppercase transition cursor-pointer ${
+                              conceptViewMode === 'grid'
+                                ? 'bg-violet-900/60 text-white'
+                                : 'text-violet-400 hover:text-white'
+                            }`}
+                          >
+                            List Grid
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setConceptViewMode('flashcards');
+                              setIsCardFlipped(false);
+                            }}
+                            className={`px-2.5 py-1 rounded-md font-bold uppercase transition flex items-center space-x-1 cursor-pointer ${
+                              conceptViewMode === 'flashcards'
+                                ? 'bg-violet-900/60 text-white'
+                                : 'text-violet-400 hover:text-white'
+                            }`}
+                          >
+                            <Sparkles className="h-3 w-3 text-pink-400" />
+                            <span>Flashcards</span>
+                          </button>
+                        </div>
+                      </div>
                       <button 
+                        type="button"
                         onClick={handleExtractConcepts} 
                         className="text-xs font-mono text-pink-400 hover:text-pink-300 flex items-center space-x-1 cursor-pointer"
                       >
@@ -859,37 +1002,224 @@ export default function RAGMentor() {
                       </button>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {concepts.map((item, idx) => (
-                        <div 
-                          key={idx}
-                          className="glass-panel p-5 border-violet-900 bg-[#0e0724]/30 flex flex-col justify-between space-y-4 hover:border-violet-700 transition group"
-                        >
-                          <div className="space-y-2">
-                            <h5 className="text-base font-extrabold text-pink-400 tracking-wide">
-                              {item.concept}
-                            </h5>
-                            <p className="text-xs md:text-sm text-violet-100 leading-relaxed font-medium">
-                              {item.definition}
-                            </p>
-                            {item.significance && (
-                              <p className="text-[11px] md:text-xs text-violet-400 italic bg-violet-950/20 p-2 rounded border border-violet-950/40 leading-snug">
-                                <span className="font-semibold uppercase not-italic font-mono text-[9px] block text-violet-500 mb-0.5">Placement Significance:</span>
-                                {item.significance}
-                              </p>
-                            )}
-                          </div>
-
-                          <button
-                            onClick={() => handleDiscussConcept(item.concept)}
-                            className="mt-2 text-xs text-pink-500 font-bold uppercase font-mono tracking-wide hover:text-pink-400 flex items-center space-x-1 cursor-pointer w-fit opacity-80 group-hover:opacity-100 transition-opacity"
+                    {conceptViewMode === 'grid' ? (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {concepts.map((item, idx) => (
+                          <div 
+                            key={idx}
+                            className="glass-panel p-5 border-violet-900 bg-[#0e0724]/30 flex flex-col justify-between space-y-4 hover:border-violet-700 transition group"
                           >
-                            <span>Discuss with AI Tutor</span>
-                            <ChevronRight className="h-3.5 w-3.5" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
+                            <div className="space-y-2">
+                              <h5 className="text-base font-extrabold text-pink-400 tracking-wide">
+                                {item.concept}
+                              </h5>
+                              <p className="text-xs md:text-sm text-violet-100 leading-relaxed font-medium">
+                                {item.definition}
+                              </p>
+                              {item.significance && (
+                                <p className="text-[11px] md:text-xs text-violet-400 italic bg-violet-950/20 p-2 rounded border border-violet-950/40 leading-snug">
+                                  <span className="font-semibold uppercase not-italic font-mono text-[9px] block text-violet-500 mb-0.5">Placement Significance:</span>
+                                  {item.significance}
+                                </p>
+                              )}
+                            </div>
+
+                            <button
+                              type="button"
+                              onClick={() => handleDiscussConcept(item.concept)}
+                              className="mt-2 text-xs text-pink-500 font-bold uppercase font-mono tracking-wide hover:text-pink-400 flex items-center space-x-1 cursor-pointer w-fit opacity-80 group-hover:opacity-100 transition-opacity"
+                            >
+                              <span>Discuss with AI Tutor</span>
+                              <ChevronRight className="h-3.5 w-3.5" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      /* FLASHCARD DECK VIEW */
+                      <div className="max-w-xl mx-auto py-4 space-y-6">
+                        {(() => {
+                          const activeList = isShuffled ? shuffledConcepts : concepts;
+                          const currentCard = activeList[currentCardIndex];
+                          if (!currentCard) return null;
+
+                          return (
+                            <>
+                              <div className="flex justify-between items-center text-xs font-mono font-bold text-violet-400">
+                                <span>CARD {currentCardIndex + 1} OF {activeList.length}</span>
+                                <span className="text-[10px] text-pink-400">{isShuffled ? 'Shuffled Session' : 'Standard Order'}</span>
+                              </div>
+                              <div className="w-full h-1.5 bg-violet-950/60 rounded-full overflow-hidden">
+                                <div 
+                                  className="h-full bg-gradient-to-r from-violet-500 to-pink-500 transition-all duration-300"
+                                  style={{ width: `${((currentCardIndex + 1) / activeList.length) * 100}%` }}
+                                ></div>
+                              </div>
+
+                              {/* 3D Flip Card Container */}
+                              <div 
+                                onClick={() => setIsCardFlipped(!isCardFlipped)}
+                                className="relative w-full h-80 perspective-1000 cursor-pointer select-none group"
+                              >
+                                {/* Stacked Cards Background Effect for visual polish */}
+                                <div className="absolute inset-0 bg-[#0e0728] border border-violet-950/40 rounded-2xl transform translate-x-2 translate-y-2 opacity-40 -z-20"></div>
+                                <div className="absolute inset-0 bg-[#0e0728] border border-violet-950/40 rounded-2xl transform translate-x-1 translate-y-1 opacity-70 -z-10"></div>
+
+                                {/* Main Flipping Card Body */}
+                                <div 
+                                  className={`relative w-full h-full rounded-2xl border transition-transform duration-500 preserve-3d ${
+                                    isCardFlipped 
+                                      ? 'rotate-y-180 border-pink-500/40 shadow-xl shadow-pink-950/10' 
+                                      : 'border-violet-900/60 shadow-xl shadow-violet-950/10'
+                                  }`}
+                                >
+                                  {/* FRONT SIDE (Concept Title) */}
+                                  <div className={`absolute inset-0 w-full h-full rounded-2xl bg-[#0d0724] border border-violet-900/40 backface-hidden p-6 flex flex-col justify-between items-center text-center ${
+                                    isCardFlipped ? 'pointer-events-none' : ''
+                                  }`}>
+                                    <div className="w-full flex justify-between items-center text-[9px] font-mono text-violet-500 font-bold uppercase tracking-widest border-b border-violet-950/30 pb-2">
+                                      <span>RAG Concept Active Recall</span>
+                                      <Sparkles className="h-3.5 w-3.5 text-pink-500" />
+                                    </div>
+                                    <div className="flex-1 flex flex-col justify-center items-center px-4">
+                                      <h3 className="text-2xl md:text-3xl font-black text-white bg-gradient-to-r from-violet-300 via-pink-300 to-indigo-300 bg-clip-text text-transparent tracking-wide">
+                                        {currentCard.concept}
+                                      </h3>
+                                      <p className="text-[10px] text-violet-500/90 font-semibold font-mono tracking-wide mt-4 uppercase bg-[#140b2e]/60 border border-violet-950 px-3 py-1 rounded-full">
+                                        Click Card or Press Space to Flip
+                                      </p>
+                                    </div>
+                                    <div className="w-full text-[9px] font-mono text-violet-400/50 uppercase border-t border-violet-950/30 pt-2">
+                                      DevPrep AI Placement OS
+                                    </div>
+                                  </div>
+
+                                  {/* BACK SIDE (Definition & Placement Significance) */}
+                                  <div className={`absolute inset-0 w-full h-full rounded-2xl bg-[#120a30] border border-pink-900/30 rotate-y-180 backface-hidden p-6 flex flex-col justify-between ${
+                                    !isCardFlipped ? 'pointer-events-none' : ''
+                                  }`}>
+                                    <div className="w-full flex justify-between items-center text-[9px] font-mono text-pink-400 font-bold uppercase tracking-widest border-b border-pink-950/20 pb-2">
+                                      <span>Core Definition</span>
+                                      <span className="text-violet-400 font-bold">Concept Detail</span>
+                                    </div>
+
+                                    {/* Definition and significance body */}
+                                    <div className="flex-1 overflow-y-auto my-3.5 space-y-4 pr-1 text-left scrollbar-thin">
+                                      <div className="space-y-1">
+                                        <span className="text-[9px] font-mono font-bold text-pink-400 uppercase tracking-widest block">Definition:</span>
+                                        <p className="text-xs md:text-sm text-violet-150 leading-relaxed font-semibold">
+                                          {currentCard.definition}
+                                        </p>
+                                      </div>
+                                      {currentCard.significance && (
+                                        <div className="space-y-1 bg-[#0b0520]/60 p-3 rounded-xl border border-pink-950/20">
+                                          <span className="text-[9px] font-mono font-bold text-violet-400 uppercase tracking-widest block">Placement Relevance:</span>
+                                          <p className="text-[11px] md:text-xs text-violet-350 italic leading-relaxed">
+                                            {currentCard.significance}
+                                          </p>
+                                        </div>
+                                      )}
+                                    </div>
+
+                                    <div className="w-full flex justify-between items-center border-t border-pink-950/20 pt-2 shrink-0">
+                                      <button
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.stopPropagation(); // prevent flipping card
+                                          handleDiscussConcept(currentCard.concept);
+                                        }}
+                                        className="text-[10px] text-pink-500 font-bold uppercase font-mono tracking-wide hover:text-pink-400 flex items-center space-x-1 cursor-pointer"
+                                      >
+                                        <span>Discuss with Tutor</span>
+                                        <ChevronRight className="h-3.5 w-3.5" />
+                                      </button>
+                                      <span className="text-[8px] font-mono text-violet-500/80 uppercase">Click to flip back</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Controls toolbar */}
+                              <div className="flex justify-between items-center gap-3 pt-2">
+                                <div className="flex items-center space-x-2">
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setIsCardFlipped(false);
+                                      setCurrentCardIndex(prev => (prev === 0 ? activeList.length - 1 : prev - 1));
+                                    }}
+                                    className="p-2.5 rounded-xl bg-violet-950/40 border border-violet-850 hover:border-violet-650 text-violet-300 hover:text-white transition cursor-pointer"
+                                    title="Previous Card (←)"
+                                  >
+                                    <ChevronLeft className="h-4.5 w-4.5" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setIsCardFlipped(!isCardFlipped);
+                                    }}
+                                    className="px-4 py-2.5 rounded-xl bg-violet-950/40 border border-violet-850 hover:border-violet-650 text-violet-300 hover:text-white text-xs font-bold uppercase font-mono tracking-wide transition flex items-center space-x-1.5 cursor-pointer"
+                                    title="Flip Card (Space)"
+                                  >
+                                    <RotateCw className="h-3.5 w-3.5 text-pink-400" />
+                                    <span>Flip</span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setIsCardFlipped(false);
+                                      setCurrentCardIndex(prev => (prev === activeList.length - 1 ? 0 : prev + 1));
+                                    }}
+                                    className="p-2.5 rounded-xl bg-violet-950/40 border border-violet-850 hover:border-violet-650 text-violet-300 hover:text-white transition cursor-pointer"
+                                    title="Next Card (→)"
+                                  >
+                                    <ChevronRight className="h-4.5 w-4.5" />
+                                  </button>
+                                </div>
+
+                                <div className="flex items-center space-x-2">
+                                  {/* Shuffle Button */}
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setIsCardFlipped(false);
+                                      if (isShuffled) {
+                                        setShuffledConcepts(concepts);
+                                        setIsShuffled(false);
+                                        setCurrentCardIndex(0);
+                                      } else {
+                                        const shuffled = [...concepts].sort(() => Math.random() - 0.5);
+                                        setShuffledConcepts(shuffled);
+                                        setIsShuffled(true);
+                                        setCurrentCardIndex(0);
+                                      }
+                                    }}
+                                    className={`px-3 py-2.5 rounded-xl border text-xs font-bold uppercase font-mono tracking-wide transition flex items-center space-x-1.5 cursor-pointer ${
+                                      isShuffled 
+                                        ? 'bg-gradient-to-r from-violet-600/35 to-pink-500/25 border-violet-500 text-white' 
+                                        : 'bg-violet-950/40 border-violet-850 hover:border-violet-650 text-violet-300 hover:text-white'
+                                    }`}
+                                    title="Shuffle Deck Order"
+                                  >
+                                    <Shuffle className="h-3.5 w-3.5" />
+                                    <span>{isShuffled ? 'Shuffled' : 'Shuffle'}</span>
+                                  </button>
+                                </div>
+                              </div>
+
+                              {/* Keyboard Shortcuts hints */}
+                              <p className="text-[10px] text-center text-violet-500/80 font-mono">
+                                💡 Shortcut hints: Press <span className="text-violet-400 font-bold bg-[#0d0724] border border-violet-950 px-1 py-0.5 rounded">Space</span> to Flip, and <span className="text-violet-400 font-bold bg-[#0d0724] border border-violet-950 px-1 py-0.5 rounded">←</span> or <span className="text-violet-400 font-bold bg-[#0d0724] border border-violet-950 px-1 py-0.5 rounded">→</span> keys to navigate cards.
+                              </p>
+                            </>
+                          );
+                        })()}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

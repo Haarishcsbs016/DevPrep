@@ -6,7 +6,6 @@ import dotenv from 'dotenv';
 // Import Routes
 import authRoutes from './routes/auth.js';
 import dsaRoutes from './routes/dsa.js';
-import interviewRoutes from './routes/interviews.js';
 import resumeRoutes from './routes/resume.js';
 
 dotenv.config();
@@ -20,7 +19,6 @@ app.use(express.json());
 // Routes mapping
 app.use('/api/auth', authRoutes);
 app.use('/api/dsa', dsaRoutes);
-app.use('/api/interviews', interviewRoutes);
 app.use('/api/resume', resumeRoutes);
 
 // Health check endpoint
