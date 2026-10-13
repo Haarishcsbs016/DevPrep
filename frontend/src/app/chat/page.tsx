@@ -31,9 +31,48 @@ interface ChatSession {
   createdAt: string;
 }
 
+const createChatId = (prefix: string) => `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+
+const createWelcomeSession = (): ChatSession => ({
+  id: 'welcome-session',
+  title: 'New Chat',
+  messages: [
+    {
+      id: 'welcome',
+      sender: 'assistant',
+      text: `Hello! I'm your DevPrep AI assistant. Ask me anything about Data Structures, coding algorithms, resume updates, system design patterns, or placement preparation. I'm here to help!`,
+      timestamp: new Date().toISOString()
+    }
+  ],
+  createdAt: new Date().toISOString()
+});
+
+const loadStoredSessions = (): ChatSession[] => {
+  if (typeof window === 'undefined') {
+    return [createWelcomeSession()];
+  }
+
+  try {
+    const stored = localStorage.getItem('devprep_chat_sessions');
+    if (!stored) {
+      return [createWelcomeSession()];
+    }
+
+    const parsed = JSON.parse(stored) as ChatSession[];
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      return [createWelcomeSession()];
+    }
+
+    return parsed;
+  } catch (error) {
+    console.error('Error loading chat sessions:', error);
+    return [createWelcomeSession()];
+  }
+};
+
 export default function AIChatPage() {
-  const { user, geminiKey } = useStore();
-  const [sessions, setSessions] = useState<ChatSession[]>([]);
+  const { geminiKey } = useStore();
+  const [sessions, setSessions] = useState<ChatSession[]>(loadStoredSessions);
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -58,29 +97,6 @@ export default function AIChatPage() {
     }
   ];
 
-  // Load chat sessions from localStorage on mount
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('devprep_chat_sessions');
-      if (stored) {
-        try {
-          const parsed = JSON.parse(stored);
-          setSessions(parsed);
-          if (parsed.length > 0) {
-            setActiveSessionId(parsed[0].id);
-          } else {
-            createNewSession();
-          }
-        } catch (e) {
-          console.error("Error loading chat sessions:", e);
-          createNewSession();
-        }
-      } else {
-        createNewSession();
-      }
-    }
-  }, []);
-
   // Save chat sessions to localStorage whenever they change
   useEffect(() => {
     if (sessions.length > 0) {
@@ -97,7 +113,7 @@ export default function AIChatPage() {
 
   const createNewSession = () => {
     const newSession: ChatSession = {
-      id: Math.random().toString(36).substring(2, 9),
+      id: createChatId('session'),
       title: 'New Chat',
       messages: [
         {
@@ -125,7 +141,7 @@ export default function AIChatPage() {
       } else {
         // If no sessions left, create a fresh one
         const freshSession: ChatSession = {
-          id: Math.random().toString(36).substring(2, 9),
+          id: createChatId('session'),
           title: 'New Chat',
           messages: [
             {
@@ -143,21 +159,22 @@ export default function AIChatPage() {
     }
   };
 
-  const activeSession = sessions.find(s => s.id === activeSessionId);
+  const activeSession = sessions.find(s => s.id === activeSessionId) ?? sessions[0] ?? null;
+  const currentActiveId = activeSessionId ?? activeSession?.id ?? null;
 
   const handleSend = async (textToSend: string) => {
-    if (!textToSend.trim() || !activeSessionId || loading) return;
+    if (!textToSend.trim() || !currentActiveId || loading) return;
 
     const userMsg: ChatMessage = {
-      id: Math.random().toString(36).substring(7),
+      id: createChatId('msg-user'),
       sender: 'user',
       text: textToSend,
       timestamp: new Date().toISOString()
     };
 
     // Update active session with user message
-    let updatedSessions = sessions.map(s => {
-      if (s.id === activeSessionId) {
+    const updatedSessions = sessions.map(s => {
+      if (s.id === currentActiveId) {
         const isFirstUserMessage = s.messages.filter(m => m.sender === 'user').length === 0;
         const newTitle = isFirstUserMessage ? (textToSend.length > 28 ? textToSend.substring(0, 25) + '...' : textToSend) : s.title;
         return {
@@ -178,7 +195,7 @@ export default function AIChatPage() {
       You help computer science students prepare for placements. You assist with coding challenges, algorithm design, system design principles, resume review, computer science theory (OS, DBMS, CN), and soft skills.
       Keep answers clear, well-structured, professional, and instructional. Use markdown formatting and wrap code blocks in standard triple backticks (e.g. \`\`\`javascript ... \`\`\`).`;
 
-      const sessionToUse = updatedSessions.find(s => s.id === activeSessionId);
+      const sessionToUse = updatedSessions.find(s => s.id === currentActiveId);
       const messagesToFormat = sessionToUse ? sessionToUse.messages : [];
       
       // Build history for Gemini
@@ -238,14 +255,14 @@ export default function AIChatPage() {
       }
 
       const assistantMsg: ChatMessage = {
-        id: Math.random().toString(36).substring(7),
+        id: createChatId('msg-assistant'),
         sender: 'assistant',
         text: replyText,
         timestamp: new Date().toISOString()
       };
 
       setSessions(prev => prev.map(s => {
-        if (s.id === activeSessionId) {
+        if (s.id === currentActiveId) {
           return {
             ...s,
             messages: [...s.messages, assistantMsg]
@@ -254,20 +271,21 @@ export default function AIChatPage() {
         return s;
       }));
 
-    } catch (e: any) {
-      console.warn("Gemini chat API error:", e);
-      let errMsg = e.message || 'Please check your internet or API credentials.';
+    } catch (error: unknown) {
+      console.warn('Gemini chat API error:', error);
+      const baseMessage = error instanceof Error ? error.message : 'Please check your internet or API credentials.';
+      let errMsg = baseMessage;
       if (errMsg.toLowerCase().includes('quota') || errMsg.toLowerCase().includes('rate limit') || errMsg.toLowerCase().includes('limit exceeded')) {
         errMsg = "⚠️ **Gemini Free Tier Quota Exceeded**. The app tried the next configured API key automatically, but all available keys are currently rate-limited. Please wait a moment (30–60 seconds) before sending another message, or try switching models.";
       }
       const errorMsg: ChatMessage = {
-        id: Math.random().toString(36).substring(7),
+        id: createChatId('msg-assistant'),
         sender: 'assistant',
         text: errMsg,
         timestamp: new Date().toISOString()
       };
       setSessions(prev => prev.map(s => {
-        if (s.id === activeSessionId) {
+        if (s.id === currentActiveId) {
           return {
             ...s,
             messages: [...s.messages, errorMsg]
